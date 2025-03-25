@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import OrphanCard from './components/OrphanCard';
 import OrphanDetails from './components/OrphanDetails';
 import logo from './assets/logo.png';
-// Sample data with multiple orphans
+import { motion, AnimatePresence } from "framer-motion";
+
+
 const orphansData = [
   {
     name: 'Faris',
@@ -45,53 +47,6 @@ const orphansData = [
 
 function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startY, setStartY] = useState(0);
-  const [isScrollLocked, setIsScrollLocked] = useState(false);
-
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setStartY(e.touches[0].clientY);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return;
-
-    const currentY = e.touches[0].clientY;
-    const diff = startY - currentY;
-
-    if (Math.abs(diff) > 50) {
-      if (diff > 0 && currentIndex < orphansData.length - 1) {
-        setCurrentIndex(currentIndex + 1);
-      } else if (diff < 0 && currentIndex > 0) {
-        setCurrentIndex(currentIndex - 1);
-      }
-      setIsDragging(false);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
-
-
-  const handleWheel = (e: React.WheelEvent) => {
-    if (isScrollLocked) return;
-  
-    if (e.deltaY > 0 && currentIndex < orphansData.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      setIsScrollLocked(true);
-    } else if (e.deltaY < 0 && currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-      setIsScrollLocked(true);
-    }
-  
-    // Lock scrolling for 400ms
-    setTimeout(() => {
-      setIsScrollLocked(false);
-    }, 400);
-  };
 
   return (
     <div className="bg-[#FFFFF0] min-h-screen overflow-hidden">
@@ -115,44 +70,73 @@ function App() {
 
           <div
             className="md:col-span-5 flex flex-col items-center border-r"
-            onWheel={handleWheel}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
+          // onWheel={handleWheel}
+          // onTouchStart={handleTouchStart}
+          // onTouchMove={handleTouchMove}
+          // onTouchEnd={handleTouchEnd}
           >
             <h1 className="text-3xl font-semibold text-teal-700 mb-6 mt-2" >
               Choose to Honor
             </h1>
+            <div className="relative w-[340px] h-[700px] mx-auto">
+              <AnimatePresence>
+                {orphansData.map((orphan, index) => {
+                  if (index < currentIndex) return null;
+                  if (index > currentIndex + 2) return null;
 
-            <div className="relative h-[700px] w-[340px] ml-2">
-              {orphansData.map((orphan, index) => {
-                let style = '';
+                  const i = index - currentIndex;
+                  const isTop = i === 0;
+                  return (
+                    <motion.div
+                      key={index}
+                      className="absolute w-full h-full"
+                      style={{
+                        zIndex: 10 - i,
+                      }}
+                      initial={{
+                        scale: 1 - i * 0.05,
+                        y: i * 10,
+                        x: -i * 10,
+                        opacity: 1 
+                      }}
+                      animate={{
+                        scale: 1 - i * 0.05,
+                        y: i * 10,
+                        opacity: 1 ,
+                        x: -i * 20,
+                      }}
+                      transition={{
+                        type: "tween",
+                        duration: 0.4,
+                      }}
+                      drag={isTop ? "x" : false}
+                      dragConstraints={{ left: 0, right: 0 }}
+                      onDragEnd={
+                        isTop
+                          ? (_, info) => {
+                            const offset = info.offset.x;
 
-                if (index === currentIndex) {
-                  style = 'z-30 translate-x-0 scale-100 opacity-100';
-                } else if (index === currentIndex + 1) {
-                  style = 'z-20 -translate-x-4 scale-95 opacity-80';
-                } else if (index === currentIndex + 2) {
-                  style = 'z-10 -translate-x-8 scale-90 opacity-60';
-                } else {
-                  style = 'hidden';
-                }
+                            if (offset < -100 && currentIndex < orphansData.length - 1) {
+                              setCurrentIndex((prev) => prev + 1);
+                            } else if (offset > 100 && currentIndex > 0) {
+                              setCurrentIndex((prev) => prev - 1);
+                            }
+                          }
+                          : undefined
+                      }
+                      whileDrag={isTop ? { scale: 1, rotate: 2  } : {}}
+                    >
+                      <OrphanCard
+                        name={orphan.name}
+                        bio={orphan.biography}
+                        needs={orphan.needs}
 
-                return (
-                  <div
-                    key={index}
-                    className={`absolute w-full transition-all duration-500 ease-in-out ${style}`}
-                  >
-                    <OrphanCard
-                      name={orphan.name}
-                      bio={orphan.biography}
-                      needs={orphan.needs}
-                  
-                      onSelect={() => setCurrentIndex(index)}
-                    />
-                  </div>
-                );
-              })}
+                        onSelect={() => { }}
+                      />
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
             </div>
             <div className='w-[340px]'>
               <button

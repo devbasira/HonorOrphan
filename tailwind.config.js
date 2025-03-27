@@ -3,6 +3,18 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      boxShadow: {
+        figma: '0px 25px 25px rgba(36, 35, 35, 0.13)',
+      },
+      screens: {
+        '4k': '2560px',
+        'xs': '320px',
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        'ipad-pro': { min: '1024px', max: '1366px' },
+      },
       colors: {
         teal: {
           50: '#f0fdfa',

@@ -14,7 +14,7 @@ const OrphanCard: React.FC<OrphanCardProps> = ({ name, bio, needs, onSelect, }) 
   return (
     <div className="flex flex-col items-center">
       <div
-        className="bg-blue-200 w-[333px] h-[665px] rounded-lg shadow-lg mb-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 relative"
+        className="bg-blue-200 w-[333px] h-[665px] rounded-lg  mb-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 relative"
         onClick={onSelect}
         style={{
           backgroundImage: `url(${bgImage})`,

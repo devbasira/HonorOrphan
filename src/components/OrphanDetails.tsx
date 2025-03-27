@@ -1,6 +1,5 @@
 import React from 'react';
 import { Video, Headphones } from 'lucide-react';
-import img from '../assets/img.png';
 
 interface OrphanDetailsProps {
   name: string;
@@ -19,12 +18,10 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
   needs,
 }) => {
   return (
-    <div className="bg-[#FFFFF0] px-6">
-      <h2 className="text-2xl font-semibold text-teal-700 mb-6">
-        Get to know {name}
-      </h2>
+    <div className="bg-[#FFFFF0] px-6 ">
+    
 
-      <div className="mb-6 flex items-center justify-center gap-4 relative">
+      {/* <div className="mb-6 flex items-center justify-center gap-4 relative">
         <div className="w-[250px] h-[250px] rounded-full overflow-hidden">
           <img
             src={img}
@@ -36,49 +33,49 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
           <span className="-rotate-90 tracking-wider">Scroll</span>
           <span className="text-xl mt-1">↓</span>
         </div>
-      </div>
+      </div> */}
 
-      <div className="space-y-4 mb-6">
-        <div>
-          <span className="font-medium">Name:</span> {name}
+      <div className="space-y-1 mb-6">
+        <div className='text-[48px] font-semibold '>
+         {name}
         </div>
         <div>
-          <span className="font-medium">Age:</span> {age}
+          <span className="font-medium text-[18px]">Age:</span> {age}
         </div>
         <div>
-          <span className="font-medium">Location:</span> {location}
+          <span className="font-medium text-[18px]">Location:</span> {location}
         </div>
-      </div>
-
-      <div className="mb-6">
-        <h3 className="font-medium mb-2">Short Biography:</h3>
-        <p className="text-gray-600">{biography}</p>
       </div>
 
       <div className="mb-6">
-        <h3 className="font-medium mb-2">Key Needs:</h3>
+        <p className="text-gray-600 text-[18px]">{biography}</p>
+      </div>
+
+      <div className="mb-6">
+        <h3 className="font-medium mb-2 text-[18px]">Key Needs:</h3>
         <ul className="list-disc list-inside text-gray-600">
           {needs.map((need, index) => (
-            <li key={index}>{need}</li>
+            <li className='text-[16px]' key={index}>{need}</li>
           ))}
         </ul>
       </div>
+      <h3 className="font-medium mb-2 text-[18px]">Connect with {name}:</h3>
 
-      <div className="space-y-3">
-        <button className="w-full flex items-center justify-center gap-2 bg-amber-100 text-amber-800 py-3 rounded-xl hover:bg-amber-200 transition-colors">
+      <div className="space-y-3 mt-[30px]">
+        <button className="w-[400px] flex items-center justify-start px-[40px] gap-2 bg-amber-100 text-amber-800 py-3 rounded-xl hover:bg-amber-200 transition-colors">
           <Video size={20} />
           <span>Watch {name}'s Video Message</span>
         </button>
 
-        <button className="w-full flex items-center justify-center gap-2 bg-amber-50 text-amber-800 py-3 rounded-xl hover:bg-amber-100 transition-colors">
+        <button className="w-[400px] flex items-center justify-start px-[40px] gap-2 bg-amber-50 text-amber-800 py-3 rounded-xl hover:bg-amber-100 transition-colors">
           <Headphones size={20} />
           <span>Listen to {name}'s Audio Message</span>
         </button>
-        <button className="w-full flex items-center justify-center gap-2 bg-amber-50 text-amber-800 py-3 rounded-xl hover:bg-amber-100 transition-colors">
+        <button className="w-[400px] flex items-center justify-start px-[40px] gap-2 bg-amber-50 text-amber-800 py-3 rounded-xl hover:bg-amber-100 transition-colors">
           <Headphones size={20} />
           <span>Schedule an online meeting</span>
         </button>
-        <button className="w-full flex items-center justify-center gap-2 bg-amber-50 text-amber-800 py-3 rounded-xl hover:bg-amber-100 transition-colors">
+        <button className="w-[400px] flex items-center justify-start px-[40px] gap-2 bg-amber-50 text-amber-800 py-3 rounded-xl hover:bg-amber-100 transition-colors">
           <Headphones size={20} />
           <span>Request an in-person meeting</span>
         </button>

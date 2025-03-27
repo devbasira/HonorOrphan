@@ -9,6 +9,8 @@ interface OrphanCardProps {
 }
 
 const OrphanCard: React.FC<OrphanCardProps> = ({ name, bio, needs, onSelect, }) => {
+
+  
   return (
     <div className="flex flex-col items-center">
       <div

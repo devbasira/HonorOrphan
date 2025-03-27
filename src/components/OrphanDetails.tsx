@@ -1,13 +1,14 @@
 import React from 'react';
 import { Video, Headphones } from 'lucide-react';
 import img from '../assets/img.png';
+
 interface OrphanDetailsProps {
   name: string;
   age: number;
   location: string;
   biography: string;
   needs: string[];
-  imageUrl: string;
+  image: string;
 }
 
 const OrphanDetails: React.FC<OrphanDetailsProps> = ({

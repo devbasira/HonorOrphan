@@ -1,12 +1,23 @@
 import { useState } from 'react';
 import Sidebar from './components/Sidebar';
-import OrphanCard from './components/OrphanCard';
 import OrphanDetails from './components/OrphanDetails';
 import logo from './assets/logo.png';
-import { motion, AnimatePresence } from "framer-motion";
+import CardStack from './components/CardStack';
 
 
-const orphansData = [
+
+interface CardData {
+  id: string;
+  name: string;
+  age: number;
+  image: string;
+  description: string;
+  location: string;
+  biography: string;
+  needs: string[];
+}
+
+const initialCards: CardData[] = [
   {
     name: 'Faris',
     age: 10,
@@ -17,7 +28,9 @@ const orphansData = [
       'Basic daily essentials',
       'Healthcare access'
     ],
-    imageUrl: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400'
+    image: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400',
+    id: 'faris',
+    description: ''
   },
   {
     name: 'Sarah',
@@ -29,7 +42,9 @@ const orphansData = [
       'Daily necessities',
       'Medical check-ups'
     ],
-    imageUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400'
+    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400',
+    id: 'sarah',
+    description: ''
   },
   {
     name: 'Ahmed',
@@ -41,7 +56,9 @@ const orphansData = [
       'School uniform and supplies',
       'Regular meals and nutrition'
     ],
-    imageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400'
+    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400',
+    id: 'ahmed',
+    description: ''
   }
 ];
 
@@ -64,81 +81,18 @@ function App() {
       <main className="max-w-7xl mx-auto py-8 px-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
 
-          <div className="md:col-span-3 w-[350px] border-r overflow-x-auto scrollbar-hide">
+          <div className=" md:col-span-3 w-[350px] flex lg:justify-center md:justify-center justify-end items-center border-r overflow-x-auto scrollbar-hide">
             <Sidebar />
           </div>
 
           <div
-            className="md:col-span-5 flex flex-col items-center border-r"
-          // onWheel={handleWheel}
-          // onTouchStart={handleTouchStart}
-          // onTouchMove={handleTouchMove}
-          // onTouchEnd={handleTouchEnd}
+            className="md:col-span-5  flex flex-col items-center border-r"
           >
             <h1 className="text-3xl font-semibold text-teal-700 mb-6 mt-2" >
               Choose to Honor
             </h1>
-            <div className="relative w-[340px] h-[700px] mx-auto">
-              <AnimatePresence>
-                {orphansData.map((orphan, index) => {
-                  if (index < currentIndex) return null;
-                  if (index > currentIndex + 2) return null;
-
-                  const i = index - currentIndex;
-                  const isTop = i === 0;
-                  return (
-                    <motion.div
-                      key={index}
-                      className="absolute w-full h-full"
-                      style={{
-                        zIndex: 10 - i,
-                      }}
-                      initial={{
-                        scale: 1 - i * 0.05,
-                        y: i * 10,
-                        x: -i * 10,
-                        opacity: 1 
-                      }}
-                      animate={{
-                        scale: 1 - i * 0.05,
-                        y: i * 10,
-                        opacity: 1 ,
-                        x: -i * 20,
-                      }}
-                      transition={{
-                        type: "tween",
-                        duration: 0.4,
-                      }}
-                      drag={isTop ? "x" : false}
-                      dragConstraints={{ left: 0, right: 0 }}
-                      onDragEnd={
-                        isTop
-                          ? (_, info) => {
-                            const offset = info.offset.x;
-
-                            if (offset < -100 && currentIndex < orphansData.length - 1) {
-                              setCurrentIndex((prev) => prev + 1);
-                            } else if (offset > 100 && currentIndex > 0) {
-                              setCurrentIndex((prev) => prev - 1);
-                            }
-                          }
-                          : undefined
-                      }
-                      whileDrag={isTop ? { scale: 1, rotate: 2  } : {}}
-                    >
-                      <OrphanCard
-                        name={orphan.name}
-                        bio={orphan.biography}
-                        needs={orphan.needs}
-
-                        onSelect={() => { }}
-                      />
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
-            </div>
-            <div className='w-[340px]'>
+            <CardStack initialCards={initialCards} setIndex={setCurrentIndex} className="mt-6 mb-20" />
+            <div className='w-[340px] mt-32 md:mt-6 lg:mt-5'>
               <button
                 onClick={() => { }}
                 className="bg-[#FFA500] w-[164px] hover:bg-orange-400 text-white font-semibold py-2 px-6 rounded-full transition-all"
@@ -148,10 +102,8 @@ function App() {
             </div>
 
           </div>
-
           <div className="md:col-span-4 h-[85vh] overflow-y-auto pr-2 scrollbar-hide">
-
-            <OrphanDetails {...orphansData[currentIndex]} />
+            <OrphanDetails {...initialCards[currentIndex]} />
           </div>
         </div>
       </main>

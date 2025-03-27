@@ -67,12 +67,12 @@ function App() {
   return (
     <div className=" bg-[#FFFFF0] min-h-screen overflow-hidden">
 
-      <header className="bg-[#1A6874] text-white p-4">
+      <header className="h-[77px] lg:bg-[#1A6874] bg-[#FFFFF0] text-white p-4">
         <div className="max-w-7xl mx-auto flex lg:flex-row md:flex-row gap-[20px] flex-col justify-between items-center">
-          <div className="flex items-center gap-2">
+          <div className="lg:flex hidden items-center gap-2">
             <img src={logo} alt="" />
           </div>
-          <div className="font-semibold text-gray-200">"No! But you do not honor the orphan."</div>
+          <div className="lg:flex hidden font-semibold text-gray-200">"No! But you do not honor the orphan."</div>
         </div>
       </header>
       <main className="flex justify-center items-center max-w-[1200px] mx-auto lg:py-8 lg:px-4">

@@ -92,8 +92,8 @@ const CardStack: React.FC<CardStackProps> = ({ className, initialCards,setIndex 
             style={{
               zIndex: cards.length - index,
               boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
-              transform: index > 0 ? `translateX(${index * 20}px) scale(${1 - index * 0.05})` : 'none',
-              right: index > 0 ? `${index * 10}px` : '0',
+              transform: index > 0 ? `translateX(${index * 5}px) scale(${1 - index * 0.05})` : 'none',
+              // right: index > 0 ? `${index * 10}px` : '0',
               opacity: index > 3 ? 0 : 1 - index * 0.15,
             }}
             isTopCard={index === 0} />

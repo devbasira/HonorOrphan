@@ -53,7 +53,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     <motion.div
       ref={cardRef}
       className={cn(
-        "swipable-card absolute h-[665px] mr-4  overflow-hidden rounded-xl",
+        "swipable-card absolute h-[665px] ml-4  overflow-hidden rounded-xl",
         className
       )}
       style={{
@@ -66,7 +66,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
       drag={isTopCard ? "x" : false}
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       onDragEnd={(_, info) => isTopCard && handlePan(info)}
-      whileTap={isTopCard ? { scale: 1.02 } : undefined}
+      whileTap={isTopCard ? { scale: 1 } : undefined}
       animate={exitX !== null ? { x: exitX } : {}}
       transition={{ 
         type: "spring", 

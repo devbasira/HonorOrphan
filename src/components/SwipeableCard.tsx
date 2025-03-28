@@ -61,7 +61,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   : isExpanded
     ? "100%"
     : isMobile
-      ? "33.333333%"
+      ? "45.333333%"
       : "50%";
 
   const showOverlayContent = !isAboutClicked
@@ -72,7 +72,10 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     <motion.div
       ref={cardRef}
       className={cn(
-        "swipable-card lg:w-auto md:w-auto w-[calc(100vw-20px)] z-[1000] absolute lg:h-[665px] md:h-[665px] h-[calc(100vh-130px)]  overflow-hidden rounded-3xl shadow-figma",
+        "swipable-card lg:w-auto md:w-auto w-[calc(100vw-20px)] z-[1000] absolute",
+        "lg:h-[665px] md:h-[665px] h-[calc(100%-20px)]",
+        "transition-all duration-300 ease-in-out",
+        "overflow-hidden rounded-3xl shadow-figma",
         className
       )}
       style={{
@@ -100,7 +103,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     >
       <div className="rounded-3xl">
         <div
-          className="bg-blue-200 h-[calc(100vh-100px)] w-full md:w-[333px] md:h-[665px] lg:w-[333px] lg:h-[665px] rounded-lg shadow-lg mb-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 relative rounded-3xl"
+          className="bg-blue-200 h-[calc(100vh-100px)] w-full md:w-[333px] md:h-[665px] lg:w-[333px] lg:h-[665px] rounded-lg  mb-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 relative rounded-3xl"
           onClick={onSelect}
           style={{
             backgroundImage: `url(${bgImage})`,
@@ -109,7 +112,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
           }}
         >
           <motion.div
-            className={`overlay gap-[20px] absolute bottom-0 w-full rounded-lg bg-opacity-${showOverlayContent ? '75' : '50'} bg-[#D9D9D9] p-4 flex flex-col justify-end`}
+            className={`overlay gap-[20px] absolute bottom-0 w-full rounded-3xl bg-opacity-${showOverlayContent ? '75' : '70'} bg-[#D9D9D9] px-[40px] pt-[40px] flex flex-col justify-start`}
             initial={false}
             animate={{
               height: overlayHeight
@@ -119,20 +122,15 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
               ease: "easeInOut"
             }}
           >
-            {showOverlayContent && (
-              <div className="flex items-center justify-between w-full items-center gap-1">
-              <div className="flex">
-                <h2 className="text-[24px] font-normal text-teal-700">{name}</h2>
-                <span className="flex items-end text-sm ml-2 h-7 text-teal-700">{age}, {location}</span>
-                <span className="text-xl text-teal-700">❤️</span>
-              </div>
-              <button
-                className="flex lg:hidden p-2 rounded-full bg-white/80 hover:bg-white transition-colors"
+             {
+              showOverlayContent && (
+                <button
+                className="fixed flex items-center justify-center  bottom-[90px] right-[10px] lg:hidden p-2 rounded-full bg-white/80 hover:bg-white transition-colors w-[45px] h-[45px]"
                 onClick={() => setIsExpanded(!isExpanded)}
               >
                 <motion.svg
-                  width="22"
-                  height="22"
+                  width="25"
+                  height="25"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -144,13 +142,25 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                   <path d="M12 5v14M5 12h14" />
                 </motion.svg>
               </button>
+              )
+             }
+            {showOverlayContent && (
+              <div className="flex items-end justify-between w-full items-center gap-1">
+              <div className="flex">
+                <h2 className="text-[24px]  font-semibold text-gray-700">{name}</h2>
+                <span className="flex font-semibold items-end text-sm ml-2 h-[31px] text-gray-700">{age} years, {location}</span>
+              </div>
+              
             </div>
             )}
             {showOverlayContent ? (
-            <motion.div>
+            <motion.div className="flex flex-col">
               <motion.p
                 layout
-                className="text-gray-700 text-sm mb-"
+                className={cn(
+                  "text-gray-700 text-sm transition-all",
+                  !isExpanded ? "line-clamp-3" : ""
+                )}
                 variants={{
                   hidden: { opacity: 0, y: 10 },
                   visible: { opacity: 1, y: 0 },
@@ -159,6 +169,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
               >
                 {bio}
               </motion.p>
+             
               {isMobile ? (
                 <motion.div
                 className="mb-5"

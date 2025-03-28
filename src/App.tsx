@@ -67,7 +67,7 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isMobile = useIsMobile()
   const [isAboutClicked, setIsAbout] = useState(false);
-  // const [isHonorClicked, setIsHonor] = useState(false)
+
 
   return (
     <div className=" bg-[#FFFFF0] min-h-screen overflow-hidden">
@@ -81,19 +81,18 @@ function App() {
       </header>
       <main className="flex justify-center items-center max-w-[1200px] mx-auto lg:py-8 lg:px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-3 gap-8">
-          <div className="flex flex-col lg:col-span-1 md:col-span-1 md:w-full lg:w-full w-screen lg:h-auto md:h-auto h-screen lg:w-full lg:border-r lg:border-gray-300 flex lg:justify-center md:justify-center justify-start lg:item-center md:items-center lg:overflow-x-auto md:overflow-x-auto  scrollbar-hide">
-            <div className="  flex-col justify-center items-center">
 
+          <div style={isMobile ? { height: '100dvh' } : {}} className="flex flex-col lg:col-span-1 md:col-span-1 md:w-full lg:w-full w-screen lg:h-auto md:h-auto h-screen lg:w-full lg:border-r lg:border-gray-300 flex lg:justify-center md:justify-center justify-start lg:item-center md:items-center lg:overflow-x-auto md:overflow-x-auto  scrollbar-hide">
+            <div className="flex-col justify-center items-center">
               <CardStack
                 initialCards={initialCards}
                 setIndex={setCurrentIndex}
                 isAboutClicked = {isAboutClicked}
-                // isHonorClicked = {isHonorClicked}
-                className="lg:mt-6 md:mt-6 mt-[10px] lg:mb-20"
+                className="lg:mt-6 md:mt-6 lg:pt-0 lg:pb-0 md:pt-0 md:pb-0 pb-[20px] pt-[10px] lg:mb-20"
               />
               {
-                isMobile ? (<div>
-                  <div className="absolute bottom-0 left-0 w-[340px] flex justify-between items-center px-[20px] mt-32 md:mt-6 lg:mt-5 h-[60px] w-screen">
+                isMobile ? (<div className=''>
+                  <div className="border-t fixed bottom-0 left-0 w-[340px] flex justify-between items-center px-[20px] md:mt-6 lg:mt-5 h-[90px] w-screen">
                     <button
                       onClick={() => { }}
                       className="bg-[#FFA500] w-[212px] h-[45px] hover:bg-orange-400 text-white font-semibold py-2 px-6 rounded-full transition-all"
@@ -116,7 +115,7 @@ function App() {
                     </button>
                   </div>
                 </div>) : (
-                  <div className="w-[340px] flex justify-between items-center px-2 mt-32 md:mt-6 lg:mt-5">
+                  <div className="w-[340px]  flex justify-between items-center px-2 mt-32 md:mt-6 lg:mt-5">
                     <button
                       onClick={() => { }}
                       className="bg-[#FFA500] w-[164px] hover:bg-orange-400 text-white font-semibold py-2 px-6 rounded-full transition-all"

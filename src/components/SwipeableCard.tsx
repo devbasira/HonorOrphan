@@ -103,7 +103,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     >
       <div className="rounded-3xl">
         <div
-          className="bg-blue-200 h-[calc(100vh-100px)] w-full md:w-[333px] md:h-[665px] lg:w-[333px] lg:h-[665px] rounded-lg  mb-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 relative rounded-3xl"
+          className="h-[calc(100vh-100px)] w-full md:w-[333px] md:h-[665px] lg:w-[333px] lg:h-[665px] rounded-lg  mb-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 relative rounded-3xl"
           onClick={onSelect}
           style={{
             backgroundImage: `url(${bgImage})`,

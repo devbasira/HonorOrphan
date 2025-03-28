@@ -104,7 +104,7 @@ function App() {
                       className={`font-semibold transition-all ${
                         isAboutClicked 
                           ? 'bg-red-500 hover:bg-red-600 h-[50%] aspect-square rounded-full flex items-center justify-center' 
-                          : 'bg-[#1A6874] hover:bg-orange-400 text-white w-[35%] h-[50%] py-2 px-6 rounded-full'
+                          : 'bg-[#1A6874] text-white w-[35%] h-[50%] py-2 px-6 rounded-full'
                       }`}
                     >
                       {isAboutClicked ? (

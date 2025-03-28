@@ -61,7 +61,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   : isExpanded
     ? "100%"
     : isMobile
-      ? "25.333333%"
+      ? "33.333333%"
       : "50%";
 
   const showOverlayContent = !isAboutClicked
@@ -72,7 +72,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     <motion.div
       ref={cardRef}
       className={cn(
-        "swipable-card lg:w-auto md:w-auto w-[calc(100vw-20px)] z-[1000] absolute lg:h-[665px] md:h-[665px] h-[calc(100vh-115px)]  overflow-hidden rounded-3xl shadow-figma",
+        "swipable-card lg:w-auto md:w-auto w-[calc(100vw-20px)] z-[1000] absolute lg:h-[665px] md:h-[665px] h-[calc(100vh-130px)]  overflow-hidden rounded-3xl shadow-figma",
         className
       )}
       style={{
@@ -150,7 +150,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
             <motion.div>
               <motion.p
                 layout
-                className="text-gray-700 text-sm mb-4"
+                className="text-gray-700 text-sm mb-"
                 variants={{
                   hidden: { opacity: 0, y: 10 },
                   visible: { opacity: 1, y: 0 },
@@ -161,6 +161,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
               </motion.p>
               {isMobile ? (
                 <motion.div
+                className="mb-5"
                   animate={{
                     display: isExpanded ? "block" : "none",
                     opacity: isExpanded ? 1 : 0
@@ -186,7 +187,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
               )}
             </motion.div>
             ) : (
-              <div className="w-full h-full flex flex-col gap-[30px] justify-center items-start px-[20px]">
+              <div className="overflow-y-auto scrollbar-hide w-full h-full flex flex-col gap-[30px] justify-start items-start px-[20px] py-[60px]">
                 <img className="w-[236px] h-120px[]" src={logo} alt="logo" />
                 <div className="flex flex-col">
                 <h1 className="text-[20px] font-semibold">
@@ -195,7 +196,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                 <p className="text-[16px] text-gray-600">- Quran 89:71</p>
                 </div>
                 <div className="flex flex-col gap-[30px]">
-                  <p className="text-[16px]">
+                  <p className="text-[16px] ">
                   Honor the Orphan isn’t just about giving—it’s about honoring. Inspired by this Quranic call, our platform goes beyond sponsorship to nurture real, meaningful connections between sponsors and orphans. Through updates, letters, and engagement, sponsors become a source of love, stability, and hope. Because true care isn’t transactional—it’s about presence, protection, and belonging.
                   </p>
                   {isAboutClicked && (<p className = "text-[16px] font-semibold">

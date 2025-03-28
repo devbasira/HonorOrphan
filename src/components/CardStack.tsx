@@ -66,7 +66,7 @@ const CardStack: React.FC<CardStackProps> = ({ className, initialCards,setIndex,
   return (
     <div 
       ref={stackRef}
-      className={ cn( "flex justify-center z-[1000] relative card-stack w-full mx-auto h-[calc(100vh-90px)] lg:h-[600px] md:h-[600px]", className)}>
+      className={ cn( "flex justify-center relative card-stack w-full mx-auto h-[calc(100vh-20px)] lg:h-[600px] md:h-[600px]", className)}>
       <AnimatePresence>
         {cards.map((card, index) => (
           <SwipeableCard
@@ -92,15 +92,6 @@ const CardStack: React.FC<CardStackProps> = ({ className, initialCards,setIndex,
           </div>
         </div>
       )}
-      {/* {history.length > 0 && (
-        <button
-          onClick={handleUndo}
-          className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 bg-white hover:bg-slate-50 shadow-md px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2"
-        >
-          <ArrowLeft size={16} />
-          <span>Undo Last Swipe</span>
-        </button>
-      )} */}
     </div>
   );
 };

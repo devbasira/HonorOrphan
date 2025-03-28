@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { motion, PanInfo, useMotionValue, useTransform } from "framer-motion";
 import { cn } from "../lib/utils";
 import { useIsMobile } from "../lib/isMobile"
+import logo from '../assets/logo2.png'
 
 
 import bgImage from '../assets/image.png';
@@ -20,6 +21,7 @@ interface SwipeableCardProps {
   style?: React.CSSProperties;
   className?: string;
   isTopCard?: boolean;
+  isAboutClicked : boolean
 }
 
 const SwipeableCard: React.FC<SwipeableCardProps> = ({
@@ -33,6 +35,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   onSwipe,
   style,
   className,
+  isAboutClicked,
   isTopCard = false,
 }) => {
   const [exitX, setExitX] = useState<number | null>(null);
@@ -53,12 +56,23 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     }
   };
 
+  const overlayHeight = isAboutClicked
+  ? "100%"
+  : isExpanded
+    ? "100%"
+    : isMobile
+      ? "25.333333%"
+      : "50%";
+
+  const showOverlayContent = !isAboutClicked
+
+
 
   return (
     <motion.div
       ref={cardRef}
       className={cn(
-        "swipable-card z-[1000] absolute h-[665px]  overflow-hidden rounded-3xl shadow-figma",
+        "swipable-card lg:w-auto md:w-auto w-[calc(100vw-20px)] z-[1000] absolute lg:h-[665px] md:h-[665px] h-[calc(100vh-115px)]  overflow-hidden rounded-3xl shadow-figma",
         className
       )}
       style={{
@@ -84,9 +98,9 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         transition: { duration: 0.3 }
       }}
     >
-      <div className=" overflow-hidden  rounded-3xl ">
+      <div className="rounded-3xl">
         <div
-          className="bg-blue-200 w-[333px] h-[665px] rounded-lg shadow-lg mb-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 relative rounded-3xl"
+          className="bg-blue-200 h-[calc(100vh-100px)] w-full md:w-[333px] md:h-[665px] lg:w-[333px] lg:h-[665px] rounded-lg shadow-lg mb-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 relative rounded-3xl"
           onClick={onSelect}
           style={{
             backgroundImage: `url(${bgImage})`,
@@ -95,21 +109,18 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
           }}
         >
           <motion.div
-            className="overlay gap-[20px] absolute bottom-0 w-full rounded-lg bg-opacity-75 bg-[#D9D9D9] p-4 flex flex-col justify-end"
+            className={`overlay gap-[20px] absolute bottom-0 w-full rounded-lg bg-opacity-${showOverlayContent ? '75' : '50'} bg-[#D9D9D9] p-4 flex flex-col justify-end`}
             initial={false}
             animate={{
-              height: isExpanded
-                ? "100%"
-                : isMobile
-                  ? "33.333333%"
-                  : "50%"
+              height: overlayHeight
             }}
             transition={{
               duration: 0.4,
               ease: "easeInOut"
             }}
           >
-            <div className="flex items-center justify-between w-full items-center gap-1">
+            {showOverlayContent && (
+              <div className="flex items-center justify-between w-full items-center gap-1">
               <div className="flex">
                 <h2 className="text-[24px] font-normal text-teal-700">{name}</h2>
                 <span className="flex items-end text-sm ml-2 h-7 text-teal-700">{age}, {location}</span>
@@ -134,7 +145,8 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                 </motion.svg>
               </button>
             </div>
-
+            )}
+            {showOverlayContent ? (
             <motion.div>
               <motion.p
                 layout
@@ -173,6 +185,30 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                 </div>
               )}
             </motion.div>
+            ) : (
+              <div className="w-full h-full flex flex-col gap-[30px] justify-center items-start px-[20px]">
+                <img className="w-[236px] h-120px[]" src={logo} alt="logo" />
+                <div className="flex flex-col">
+                <h1 className="text-[20px] font-semibold">
+                "No! But you do not honor the orphan."
+                </h1>
+                <p className="text-[16px] text-gray-600">- Quran 89:71</p>
+                </div>
+                <div className="flex flex-col gap-[30px]">
+                  <p className="text-[16px]">
+                  Honor the Orphan isn’t just about giving—it’s about honoring. Inspired by this Quranic call, our platform goes beyond sponsorship to nurture real, meaningful connections between sponsors and orphans. Through updates, letters, and engagement, sponsors become a source of love, stability, and hope. Because true care isn’t transactional—it’s about presence, protection, and belonging.
+                  </p>
+                  {isAboutClicked && (<p className = "text-[16px] font-semibold">
+                  We’re building the platform—join us from the start!
+                  </p>) }
+                 {isAboutClicked && (
+                   <p className="text-[16px]">
+                   Pre-register now to be among the first sponsors and orphanages to create lasting impact
+                   </p>
+                 )}
+                </div>
+              </div>
+            )}
           </motion.div>
         </div>
       </div>

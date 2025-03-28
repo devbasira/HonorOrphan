@@ -2,6 +2,8 @@ import { useState } from 'react';
 import OrphanDetails from './components/OrphanDetails';
 import logo from './assets/logo.png';
 import CardStack from './components/CardStack';
+import { useIsMobile } from "./lib/isMobile"
+import { X } from 'lucide-react';
 
 
 
@@ -63,13 +65,15 @@ const initialCards: CardData[] = [
 
 function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isMobile = useIsMobile()
+  const [isAboutClicked, setIsAbout] = useState(false);
+  // const [isHonorClicked, setIsHonor] = useState(false)
 
   return (
     <div className=" bg-[#FFFFF0] min-h-screen overflow-hidden">
-
-      <header className="h-[77px] lg:bg-[#1A6874] bg-[#FFFFF0] text-white p-4">
-        <div className="max-w-7xl mx-auto flex lg:flex-row md:flex-row gap-[20px] flex-col justify-between items-center">
-          <div className="lg:flex hidden items-center gap-2">
+      <header className="lg:flex hidden w-screen h-[77px] lg:bg-[#1A6874] bg-[#FFFFF0] text-white p-4">
+        <div className="lg:w-[1200px] md:w-[900px] max-w-[1200px]  mx-auto flex lg:flex-row md:flex-row gap-[20px] flex-col justify-between items-center">
+          <div className="items-center gap-2">
             <img src={logo} alt="" />
           </div>
           <div className="lg:flex hidden font-semibold text-gray-200">"No! But you do not honor the orphan."</div>
@@ -77,25 +81,54 @@ function App() {
       </header>
       <main className="flex justify-center items-center max-w-[1200px] mx-auto lg:py-8 lg:px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-3 gap-8">
-          <div className="flex flex-col z-500 lg:col-span-1 md:col-span-1 md:w-full w-screen lg:w-full lg:border-r lg:border-gray-300 flex lg:justify-center md:justify-center justify-end items-center  overflow-x-auto scrollbar-hide">
-            <div className="flex flex-col items-center">
-             
+          <div className="flex flex-col lg:col-span-1 md:col-span-1 md:w-full lg:w-full w-screen lg:h-auto md:h-auto h-screen lg:w-full lg:border-r lg:border-gray-300 flex lg:justify-center md:justify-center justify-end lg:item-center md:items-center lg:overflow-x-auto md:overflow-x-auto  scrollbar-hide">
+            <div className="flex flex-col justify-center items-center">
+
               <CardStack
                 initialCards={initialCards}
                 setIndex={setCurrentIndex}
+                isAboutClicked = {isAboutClicked}
+                // isHonorClicked = {isHonorClicked}
                 className="mt-6 mb-20"
               />
-              <div className="w-[340px] flex justify-between items-center px-2 mt-32 md:mt-6 lg:mt-5">
-                <button
-                  onClick={() => { }}
-                  className="bg-[#FFA500] w-[164px] hover:bg-orange-400 text-white font-semibold py-2 px-6 rounded-full transition-all"
-                >
-                  Honor Now!
-                </button>
-                <h3 className="text-[#FFA500] font-semibold">
-                  Learn More...
-                </h3>
-              </div>
+              {
+                isMobile ? (<div>
+                  <div className="absolute bottom-0 left-0 w-[340px]  flex justify-between items-center px-[20px] mt-32 md:mt-6 lg:mt-5 h-[90px] w-screen">
+                    <button
+                      onClick={() => { }}
+                      className="bg-[#FFA500] w-[212px] h-[45px] hover:bg-orange-400 text-white font-semibold py-2 px-6 rounded-full transition-all"
+                    >
+                      Honor {initialCards[currentIndex].name}
+                    </button>
+                    <button
+                      onClick={() => { setIsAbout(!isAboutClicked) }}
+                      className={`font-semibold transition-all ${
+                        isAboutClicked 
+                          ? 'bg-red-500 hover:bg-red-600 w-[45px] h-[45px] rounded-full flex items-center justify-center' 
+                          : 'bg-[#1A6874] hover:bg-orange-400 text-white w-[130px] h-[45px] py-2 px-6 rounded-full'
+                      }`}
+                    >
+                      {isAboutClicked ? (
+                        <X size={24} className="text-white" />
+                      ) : (
+                        'About'
+                      )}
+                    </button>
+                  </div>
+                </div>) : (
+                  <div className="w-[340px] flex justify-between items-center px-2 mt-32 md:mt-6 lg:mt-5">
+                    <button
+                      onClick={() => { }}
+                      className="bg-[#FFA500] w-[164px] hover:bg-orange-400 text-white font-semibold py-2 px-6 rounded-full transition-all"
+                    >
+                      Honor Now!
+                    </button>
+                    <h3 className="text-[#FFA500] font-semibold">
+                      Learn More...
+                    </h3>
+                  </div>
+                )
+              }
             </div>
           </div>
           <div className="ml-6 hidden lg:flex justify-center items-center  lg:col-span-1 md:col-span-3 h-[85vh] overflow-y-auto pr-2 scrollbar-hide">

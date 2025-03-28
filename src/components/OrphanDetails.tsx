@@ -19,21 +19,6 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
 }) => {
   return (
     <div className="bg-[#FFFFF0] px-6 ">
-    
-
-      {/* <div className="mb-6 flex items-center justify-center gap-4 relative">
-        <div className="w-[250px] h-[250px] rounded-full overflow-hidden">
-          <img
-            src={img}
-            alt={name}
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="flex flex-col items-center justify-center text-orange-500 font-medium text-sm">
-          <span className="-rotate-90 tracking-wider">Scroll</span>
-          <span className="text-xl mt-1">↓</span>
-        </div>
-      </div> */}
 
       <div className="space-y-1 mb-6">
         <div className='text-[48px] font-semibold '>

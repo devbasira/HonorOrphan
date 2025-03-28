@@ -92,7 +92,7 @@ function App() {
               />
               {
                 isMobile ? (<div className=''>
-                  <div className="border-t fixed bg-blue-200 bottom-0 left-0 w-[340px] flex justify-between items-center px-[20px] md:mt-6 lg:mt-5 h-[14vh] w-screen">
+                  <div className="border-t fixed  bottom-0 left-0 w-[340px] flex justify-between items-center px-[20px] md:mt-6 lg:mt-5 h-[14vh] w-screen">
                     <button
                       onClick={() => { }}
                       className="bg-[#FFA500] w-[212px] h-[50%] hover:bg-orange-400 text-white font-semibold py-2 px-6 rounded-full transition-all"
@@ -103,8 +103,8 @@ function App() {
                       onClick={() => { setIsAbout(!isAboutClicked) }}
                       className={`font-semibold transition-all ${
                         isAboutClicked 
-                          ? 'bg-red-500 hover:bg-red-600 w-[45px] h-[50%] rounded-full flex items-center justify-center' 
-                          : 'bg-[#1A6874] hover:bg-orange-400 text-white w-[130px] h-[45px] py-2 px-6 rounded-full'
+                          ? 'bg-red-500 hover:bg-red-600 h-[50%] aspect-square rounded-full flex items-center justify-center' 
+                          : 'bg-[#1A6874] hover:bg-orange-400 text-white w-[130px] h-[50%] py-2 px-6 rounded-full'
                       }`}
                     >
                       {isAboutClicked ? (

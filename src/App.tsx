@@ -114,7 +114,7 @@ function App() {
         </div>
       </header>
 
-      <main className="flex justify-center items-center max-w-[1200px] mx-auto lg:py-8 lg:px-4">
+      <main className="flex justify-center items-center max-w-[1200px] mx-auto  lg:px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-8">
 
           <div style={isMobile ? { height: '100dvh' } : {}} className="flex flex-col lg:col-span-1 md:col-span-1 md:w-full lg:w-full w-screen lg:h-auto md:h-auto h-screen lg:w-full  lg:border-gray-300 flex lg:justify-center md:justify-center justify-start lg:item-center md:items-center lg:overflow-x-auto md:overflow-x-auto  scrollbar-hide">

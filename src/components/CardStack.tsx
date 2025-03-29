@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, } from "react";
+import { useImperativeHandle, forwardRef, useState, useRef, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import SwipeableCard from "./SwipeableCard";
 import { cn } from "../lib/utils";
@@ -20,61 +20,99 @@ interface CardStackProps {
   initialCards?: CardData[];
   index?: number;
   setIndex?: (index: number) => void;
-  isAboutClicked : boolean,
+  isAboutClicked: boolean,
+  waitClick: boolean,
+  setIswaitClicked: any
+  setHasSelectedCard : any
 }
 
-const CardStack: React.FC<CardStackProps> = ({ className, initialCards,setIndex, isAboutClicked }) => {
+const CardStack = forwardRef(({
+  className,
+  initialCards,
+  setIndex,
+  isAboutClicked,
+  waitClick,
+  setIswaitClicked,
+  setHasSelectedCard
+}: CardStackProps, ref) => {
+
+
+
+
   const [cards, setCards] = useState<CardData[]>(initialCards || []);
   const [lastDirection, setLastDirection] = useState<"left" | "right" | null>(null);
   const [history, setHistory] = useState<CardData[]>([]);
   const stackRef = useRef<HTMLDivElement>(null);
-  
+
+
+  const cardsRef = useRef<CardData[]>([]);
+  cardsRef.current = cards;
+
+  useImperativeHandle(ref, () => ({
+    swipeLeft: () => {
+      const topCardId = cardsRef.current[0]?.id;
+      if (topCardId) {
+        handleSwipe(topCardId, "left");
+      }
+    },
+    swipeRight: () => {
+      const topCardId = cardsRef.current[0]?.id;
+      if (topCardId) {
+        handleSwipe(topCardId, "right");
+      }
+    }
+  }));
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+
+    if (cards.length === 0) {
+      timer = setTimeout(() => {
+        setCards(initialCards || []);
+        setHistory([]); 
+        setIndex?.(0);
+      }, 1500);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [cards, initialCards, setIndex]);
+
+
   const handleSwipe = (id: string, direction: "left" | "right") => {
+    setHasSelectedCard(true)
     const cardIndex = cards.findIndex(card => card.id === id);
     if (cardIndex === -1) return;
-  
+
     const swipedCard = cards[cardIndex];
     const updatedCards = cards.filter(card => card.id !== id);
-    const nextTopCardId = updatedCards[0]?.id;
-  
+
     setHistory(prev => [...prev, swipedCard]);
     setLastDirection(direction);
     setCards(updatedCards);
-  
-    // Update the external index
-    if (setIndex) {
-      const newIndex = initialCards?.findIndex(card => card.id === nextTopCardId) ?? 0;
-      setIndex(updatedCards.length === 0 ? 0 : newIndex);
+
+
+    if (setIndex && updatedCards.length > 0) {
+      const currentCardId = updatedCards[0].id;
+      const newIndex = initialCards?.findIndex(card => card.id === currentCardId) ?? 0;
+      setIndex(newIndex);
     }
   };
 
-  
-
-  
-  useEffect(() => {
-    if (cards.length === 0) {
-      const timer = setTimeout(() => {
-        setCards(initialCards || []);
-        setHistory([]);
-        setIndex?.(0);
-      }, 1500);
-  
-      return () => clearTimeout(timer);
-    }
-  }, [cards]);
-  
   return (
-    <div 
+    <div
       ref={stackRef}
-      className={ cn( "flex justify-center relative card-stack w-full mx-auto h-[85dvh] lg:my-0 md:my-0  lg:h-[600px] md:h-[600px]", "transition-all duration-300 ease-in-out", className)}>
+      className={cn("flex justify-center relative card-stack w-full mx-auto h-[85dvh] lg:my-0 md:my-0  lg:h-[600px] md:h-[600px]", "transition-all duration-300 ease-in-out", className)}>
       <AnimatePresence>
         {cards.map((card, index) => (
           <SwipeableCard
             bio={card.biography} onSelect={function (): void {
-              throw new Error("Function not implemented.");
-            } } key={card.id}
+            }} key={card.id}
             {...card}
-            isAboutClicked = {isAboutClicked}
+            isAboutClicked={isAboutClicked}
+            waitClick={waitClick}
+            setIswaitClicked={setIswaitClicked}
             onSwipe={handleSwipe}
             style={{
               zIndex: cards.length - index,
@@ -85,7 +123,7 @@ const CardStack: React.FC<CardStackProps> = ({ className, initialCards,setIndex,
         ))}
       </AnimatePresence>
       {cards.length === 0 && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center   rounded-3xl">
+        <div className="absolute inset-0 flex flex-col items-center justify-center rounded-3xl">
           <div className="animate-float text-center p-6">
             <h3 className="text-2xl font-medium mb-2">No more cards!</h3>
             <p className="text-muted-foreground">Check back soon for more profiles</p>
@@ -94,6 +132,6 @@ const CardStack: React.FC<CardStackProps> = ({ className, initialCards,setIndex,
       )}
     </div>
   );
-};
+});
 
 export default CardStack;

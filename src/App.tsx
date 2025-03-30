@@ -23,7 +23,7 @@ const initialCards: CardData[] = [
   {
     name: 'Faris',
     age: 10,
-    location: 'Delhi, Inida',
+    location: 'Delhi, India',
     gender: 'Boy',
     biography: 'Faris is a resilient young soul growing up with a gentle heart and a deep longing for familial love. Despite facing hardships, his optimism shines through. He loves learning and dreams of a future filled with opportunity and kindness.',
     needs: [
@@ -80,17 +80,15 @@ function App() {
 
   return (
     <div className=" bg-[#FFFFF0] min-h-screen overflow-hidden">
-      <header className="w-screen justify-start  h-[100px] bg-[#FFFFF0] px-6 hidden lg:flex items-center">
-        <div className="w-full max-w-[1200px] flex items-end  justify-between">
+      <header className="w-screen justify-center  h-[100px] bg-[#FFFFF0] px-6 hidden lg:flex items-center">
+        <div className="w-full pl-[40px] pr-[30px] max-w-[1200px] flex items-center  justify-between">
 
           <div className="w-[140px] h-auto p-1 rounded-sm">
-            <img src={logo} alt="Honor the Orphan" className="h-[50px] w-auto" />
+            <img src={logo} alt="Honor the Orphan" className="h-[60px] w-auto" />
           </div>
 
           <div className="flex items-center flex-grow justify-end gap-4">
-            <div className="h-[40px] flex flex-grow items-end" >
-              <div className="h-[1px] bg-gray-300 flex-grow " />
-            </div>
+            
             <button
               onClick={() => {
                 setHasSelectedCard(!hasSelectedCard)
@@ -103,7 +101,7 @@ function App() {
                   setIsSubmitted(false)
                 }
               }}
-              className={`mt-6 font-semibold transition-all ${!hasSelectedCard
+              className={`font-semibold transition-all ${!hasSelectedCard
                 ? 'bg-red-500 hover:bg-red-600 h-[45px] w-[45px] rounded-full flex items-center justify-center'
                 : 'bg-[#1A6874] text-white h-[45px] w-[130px] px-6 rounded-full'
                 }`}
@@ -168,7 +166,7 @@ function App() {
                         setHasSelectedCard(true)
                         cardStackRef.current?.swipeLeft();
                       }}
-                      className="w-10 h-10 rounded-full bg-[#EAEAEA] flex items-center justify-center hover:bg-[#ddd] transition"
+                      className="w-[45px] h-[45px] rounded-full bg-[#EAEAEA] flex items-center justify-center hover:bg-[#ddd] transition"
                     >
                       <span className="text-[#1A6864] text-xl">←</span>
                     </button>
@@ -178,7 +176,7 @@ function App() {
                         setHasSelectedCard(false)
                         setShowForm(true)
                       }}
-                      className="bg-[#FFA500] w-[164px] hover:bg-orange-400 text-white font-semibold py-2 rounded-full transition-all"
+                      className="bg-[#FFA500] w-[200px] hover:bg-orange-400 text-white font-semibold py-2 h-[45px] rounded-full transition-all"
                     >
                       Honor {initialCards[currentIndex].name}
                     </button>
@@ -189,7 +187,7 @@ function App() {
                         setHasSelectedCard(true)
                         cardStackRef.current?.swipeRight();
                       }}
-                      className="w-10 h-10 rounded-full bg-[#EAEAEA] flex items-center justify-center hover:bg-[#ddd] transition"
+                      className="w-[45px] h-[45px] rounded-full bg-[#EAEAEA] flex items-center justify-center hover:bg-[#ddd] transition"
                     >
                       <span className="text-[#1A6864] text-xl">→</span>
                     </button>

@@ -23,8 +23,8 @@ interface SwipeableCardProps {
   className?: string;
   isTopCard?: boolean;
   isAboutClicked: boolean;
-  waitClick : boolean;
-  setIswaitClicked : any
+  waitClick: boolean;
+  setIswaitClicked: any
 }
 
 const SwipeableCard: React.FC<SwipeableCardProps> = ({
@@ -54,14 +54,29 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   const cardRef = useRef<HTMLDivElement>(null);
 
 
-  //variable for form data
-  const [role, setRole] = useState("");
+
+  const [formData, setFormData] = useState({
+    role: '',
+    name: '',
+    email: '',
+    whatsapp: '',
+    interest: '',
+    motivation: '',
+    orphanageName: '',
+    caretakerName: '',
+    orphansCount: '',
+    boysCount: '',
+    girlsCount: '',
+    address: '',
+    location: ''
+  });
   const [isVolunteer, setIsVolunteer] = useState(false);
-  const [donorName, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
-  const [interest, setInterest] = useState("");
-  const [motivation, setMotivation] = useState("");
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   const handlePan = (info: PanInfo) => {
     if (Math.abs(info.offset.x) > 150) {
@@ -77,32 +92,41 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
       ? "100%"
       : isMobile
         ? "45.333333%"
-        : "50%";
+        : "20%";
 
   const showOverlayContent = !isAboutClicked
 
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-  
-    const formData = {
-      role,
-      isVolunteer,
-      name,
-      email,
-      whatsapp,
-      interest,
-      motivation,
-    };
-  
-    console.log("Form Submitted:", formData);
-  
-    setTimeout(() => {
-      setFormSubmitted(true);
-    }, 1000);
+  const submitToFirebase = async (data: any) => {
+    console.log("Simulating Firebase submission...");
+    console.log(data);
+
+    // Simulate a network delay
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("success");
+      }, 1000);
+    });
   };
-  
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    console.log("Submitted Data:", formData);
+
+    try {
+      const response = await submitToFirebase(formData);
+
+      if (response === "success") {
+        setFormSubmitted(true);
+      }
+    } catch (error) {
+      console.error("Submission failed:", error);
+      alert("Something went wrong. Please try again later.");
+    }
+  };
+
 
   return (
     <motion.div
@@ -181,15 +205,18 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
               )
             }
             {showOverlayContent && (
-              <div className="flex items-end justify-between w-full items-center gap-1">
-                <div className="flex">
-                  <h2 className="text-[24px]  font-semibold text-gray-700">{name}</h2>
-                  <span className="flex font-semibold items-end text-sm ml-2 h-[31px] text-gray-700">{age} years, {location}</span>
+              <div className="flex items-baseline justify-between w-full gap-1">
+                <div className="flex items-baseline gap-2">
+                  <h2 className="text-[24px] font-semibold text-gray-700">{name}</h2>
+                  <span className="font-medium text-sm text-gray-700">
+                    {age} years, {location}
+                  </span>
                 </div>
               </div>
+
             )}
             {showOverlayContent ? (
-              <motion.div className="flex flex-col">
+              <motion.div className="lg:hidden  flex flex-col">
                 <motion.p
                   layout
                   className={cn(
@@ -239,100 +266,251 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                     formSubmitted ? (<div className="w-full h-full flex flex-col items-center justify-center gap-[30px]">
                       <img src={icon} className="w-[50px] h-auto " alt="" />
                       <h1 className="px-[15px] w-[210px] text-center text-[#989898] font-semibold text-[20px]">
-                      You have met all
-                      the little hearts waiting for support
+                        You have met all
+                        the little hearts waiting for support
                       </h1>
 
                       <h1 className="w-[140px]  text-[#1A6864] font-semibold text-[20px] text-center">
-                     I want to meet them again!
+                        I want to meet them again!
                       </h1>
                     </div>) : (
                       <div className="overflow-y-auto scrollbar-hide w-full h-full flex flex-col gap-[30px] justify-start items-start pb-[20px]">
-                      <img className="w-[96px] h-auto" src={logo} alt="" />
-                       <h1 className="text-[24px] text-[#1A6874] font-semibold ">
-                         Pre-registration From
-                       </h1>
-                       <form onSubmit={handleSubmit} className="flex flex-col  w-full gap-4">
-                         <label className="text-[#1A6874] font-medium">Register as:</label>
-                         <select
-                           value={role}
-                           onChange={(e) => setRole(e.target.value)}
-                           className="w-full h-[45px] rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-700 focus:border-[#1A6864] focus:ring-1 focus:ring-[#1A6864] focus:outline-none transition duration-150"
-                           required
-                         >
-                           <option value="" disabled hidden>
-                             Donor / Orphanage / Volunteer
-                           </option>
-                           <option value="Donor">Donor</option>
-                           <option value="Orphanage">Orphanage</option>
-                           <option value="Volunteer">Volunteer</option>
-                         </select>
-     
-                         <label className="flex w-full justify-center items-center gap-2 text-sm">
-                           <input
-                             type="checkbox"
-                             checked={isVolunteer}
-                             onChange={(e) => setIsVolunteer(e.target.checked)}
-                             className="accent-[#1A6864] w-4 h-4"
-                           />
-                           I would like to Volunteer as well
-                         </label>
-     
-                         <input
-                           type="text"
-                           placeholder="Name*"
-                           value={donorName}
-                           onChange={(e) => setName(e.target.value)}
-                           required
-                           className="border placeholder:text-[#1A6874] placeholder:text-sm w-full h-[45px] border-gray-300 rounded-md p-2  text-center"
-                         />
-     
-                         <input
-                           type="email"
-                           placeholder="email*"
-                           value={email}
-                           onChange={(e) => setEmail(e.target.value)}
-                           required
-                           className="border placeholder:text-[#1A6874] placeholder:text-sm w-full h-[45px] border-gray-300 rounded-md p-2  text-center"
-                         />
-     
-                         <input
-                           type="text"
-                           placeholder="WhatsApp Number"
-                           value={whatsapp}
-                           onChange={(e) => setWhatsapp(e.target.value)}
-                           className="border placeholder:text-[#1A6874] placeholder:text-sm w-full h-[45px] border-gray-300 rounded-md p-2  text-center"
-                         />
-     
-                         <input
-                           type="text"
-                           placeholder="Interested to"
-                           value={interest}
-                           onChange={(e) => setInterest(e.target.value)}
-                           className="border placeholder:text-[#1A6874] placeholder:text-sm w-full h-[45px] border-gray-300 rounded-md p-2  text-center"
-                         />
-     
-                         <input
-                           type="text"
-                           placeholder="What is your motivation to join?"
-                           value={motivation}
-                           onChange={(e) => setMotivation(e.target.value)}
-                           className="border placeholder:text-[#1A6874] placeholder:text-sm w-full h-[45px] border-gray-300 rounded-md p-2  text-center"
-                         />
-     
-                         <div className="w-full h-[70px] flex flex-col items-center justify-between">
-                           <button
-                             type="submit"
-                             className="bg-[#1A6864] w-[212px] h-[45px] text-white font-semibold py-2 rounded-full"
-                           >
-                             Join the waitlist
-                           </button>
-                           <h2 className="text-xs text-[#1A6864]">
-                             or just Subscribe for Updates
-                           </h2>
-                         </div>
-                       </form>
-     
+                        <img className="w-[96px] h-auto" src={logo} alt="" />
+                        <h1 className="text-[24px] text-[#1A6874] font-semibold ">
+                          Pre-registration From
+                        </h1>
+                        <motion.form
+                          initial={{ y: 300, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          exit={{ y: 300, opacity: 0 }}
+                          transition={{ type: 'tween', ease: 'easeInOut', duration: 0.5 }}
+                          onSubmit={handleSubmit}
+                          className="flex flex-col justify-center gap-4 w-full max-w-[560px] mx-auto mt-4"
+                        >
+                          <div className="text-md w-full text-center text-[#1A6864] font-medium">Register as:</div>
+                          <select
+                            name="role"
+                            value={formData.role}
+                            onChange={handleChange}
+                            className="p-2 h-[45px] text-center rounded-lg border border-gray-400"
+                            required
+                          >
+                            <option value="">Select your role</option>
+                            <option value="donor">Donor</option>
+                            <option value="volunteer">Volunteer</option>
+                            <option value="orphanage">Orphanage</option>
+                          </select>
+                          {formData.role === "volunteer" && (
+                            <>
+                              <input
+                                name="name"
+                                placeholder="Name*"
+                                value={formData.name}
+                                onChange={handleChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="email"
+                                placeholder="Email*"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="whatsapp"
+                                placeholder="WhatsApp Number with country code"
+                                value={formData.whatsapp}
+                                onChange={handleChange}
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="location"
+                                placeholder="Location"
+                                value={formData.location}
+                                onChange={handleChange}
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <div className="flex flex-col gap-1">
+                                <label className="flex w-full justify-center items-center gap-2 text-sm text-[#1A6864] w-4 h-4 my-2">How would you like to contribute?</label>
+                                <select
+                                  name="interest"
+                                  value={formData.interest}
+                                  onChange={handleChange}
+                                  required
+                                  className="p-2 h-[45px] rounded-lg border border-gray-400 bg-white text-sm text-center text-[#1A6864] focus:border-[#1A6864] focus:ring-1 focus:ring-[#1A6864] focus:outline-none transition duration-150"
+                                >
+                                  <option value="" disabled hidden>Select an option</option>
+                                  <option value="Mentorship & Emotional Support">Mentorship & Emotional Support
+                                  </option>
+                                  <option value="Fundraising & Awareness">Fundraising & Awareness</option>
+                                  <option value="Tech & Design Support"> Tech & Design Support</option>
+                                  <option value="Administrative & Outreach Support">Administrative & Outreach Support</option>
+                                  <option value="Tech & Design Support"> Tech & Design Support</option>
+                                  <option value="other"> Other</option>
+                                </select>
+                              </div>
+                              {formData.interest === "other" && (
+                                <textarea
+                                  name="motivation"
+                                  placeholder="How would you like to contribute?"
+                                  value={formData.motivation}
+                                  onChange={handleChange}
+                                  className="p-2 h-[40px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                                />
+                              )}
+                              <textarea
+                                name="motivation"
+                                placeholder="Why do you want to volunteer? (optional)"
+                                value={formData.motivation}
+                                onChange={handleChange}
+                                className="p-2 h-[80px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                            </>
+                          )}
+                          {formData.role === "donor" && (
+                            <>
+                              <label className="flex w-full justify-center items-center gap-2 text-sm">
+                                <input
+                                  type="checkbox"
+                                  checked={isVolunteer}
+                                  onChange={(e) => setIsVolunteer(e.target.checked)}
+                                  className="accent-[#1A6864] w-4 h-4"
+                                />
+                                I would like to Volunteer as well
+                              </label>
+
+                              <input
+                                name="name"
+                                placeholder="Name*"
+                                value={formData.name}
+                                onChange={handleChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="email"
+                                placeholder="Email*"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="whatsapp"
+                                placeholder="WhatsApp Number with country code"
+                                value={formData.whatsapp}
+                                onChange={handleChange}
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="location"
+                                placeholder="Location"
+                                value={formData.location}
+                                onChange={handleChange}
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <div className="flex flex-col gap-1">
+                                <label className="flex w-full justify-center items-center gap-2 text-sm text-[#1A6864] w-4 h-4 my-2">Interested to:</label>
+                                <select
+                                  name="interest"
+                                  value={formData.interest}
+                                  onChange={handleChange}
+                                  required
+                                  className="p-2 h-[45px] rounded-lg border border-gray-400 bg-white text-sm text-center text-[#1A6864] focus:border-[#1A6864] focus:ring-1 focus:ring-[#1A6864] focus:outline-none transition duration-150"
+                                >
+                                  <option value="" disabled hidden>Select an option</option>
+                                  <option value="Donate only">Donate only</option>
+                                  <option value="Fully sponsor an orphan">Fully sponsor an orphan</option>
+                                </select>
+                              </div>
+                              <textarea
+                                name="motivation"
+                                placeholder="What is your motivation to join? (optional)"
+                                value={formData.motivation}
+                                onChange={handleChange}
+                                className="p-2 h-[80px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                            </>
+                          )}
+
+                          {formData.role === "orphanage" && (
+                            <>
+                              <input
+                                name="orphanageName"
+                                placeholder="Orphanage Name*"
+                                value={formData.orphanageName || ""}
+                                onChange={handleChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="caretakerName"
+                                placeholder="Guardian/Caretaker Name*"
+                                value={formData.caretakerName || ""}
+                                onChange={handleChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="email"
+                                placeholder="Email*"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="address"
+                                placeholder="Address* (City, Country)"
+                                value={formData.address || ""}
+                                onChange={handleChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <label className="flex w-full justify-center items-center gap-2 text-sm text-[#1A6864] w-4 h-4 ">Number of Orphans :</label>
+                              <input
+                                name="boysCount"
+                                type="number"
+                                placeholder="No. of Boys*"
+                                value={formData.boysCount || ""}
+                                onChange={handleChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="girlsCount"
+                                type="number"
+                                placeholder="No. of Girls*"
+                                value={formData.girlsCount || ""}
+                                onChange={handleChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="whatsapp"
+                                placeholder="WhatsApp Number* (Include country code)"
+                                value={formData.whatsapp}
+                                onChange={handleChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                            </>
+                          )}
+
+                          <button
+                            type="submit"
+                            className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-[#155a57] transition mx-auto"
+                          >
+                            Join the waitlist
+                          </button>
+
+                          <p className="text-center text-[#1A6864] text-sm underline cursor-pointer">
+                            or Just Subscribe for Update
+                          </p>
+                        </motion.form>
+
                       </div>
                     )
                   }

@@ -2,7 +2,7 @@ import { useImperativeHandle, forwardRef, useState, useRef, useEffect } from "re
 import { AnimatePresence } from "framer-motion";
 import SwipeableCard from "./SwipeableCard";
 import { cn } from "../lib/utils";
-import { subscribe } from "firebase/data-connect";
+import icon from '../assets/icon.png';
 
 interface CardData {
   id: string;
@@ -24,7 +24,7 @@ interface CardStackProps {
   isAboutClicked: boolean,
   waitClick: boolean,
   setIswaitClicked: any
-  setHasSelectedCard : any
+  setHasSelectedCard: any
   setIsSubscribe: any,
   subscribe: boolean
 }
@@ -47,6 +47,8 @@ const CardStack = forwardRef(({
   const [cards, setCards] = useState<CardData[]>(initialCards || []);
   const [lastDirection, setLastDirection] = useState<"left" | "right" | null>(null);
   const [history, setHistory] = useState<CardData[]>([]);
+  const [countdown, setCountdown] = useState<number | null>(null);
+
   const stackRef = useRef<HTMLDivElement>(null);
 
 
@@ -70,19 +72,29 @@ const CardStack = forwardRef(({
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
-
+    let countdownInterval: NodeJS.Timeout;
+  
     if (cards.length === 0) {
+      setCountdown(3);
+  
+      countdownInterval = setInterval(() => {
+        setCountdown(prev => (prev !== null && prev > 0 ? prev - 1 : null));
+      }, 500); 
+  
       timer = setTimeout(() => {
         setCards(initialCards || []);
-        setHistory([]); 
+        setHistory([]);
         setIndex?.(0);
+        setCountdown(null);
       }, 1500);
     }
-
+  
     return () => {
-      if (timer) clearTimeout(timer);
+      clearTimeout(timer);
+      clearInterval(countdownInterval);
     };
   }, [cards, initialCards, setIndex]);
+  
 
 
   const handleSwipe = (id: string, direction: "left" | "right") => {
@@ -115,11 +127,12 @@ const CardStack = forwardRef(({
             bio={card.biography} onSelect={function (): void {
             }} key={card.id}
             {...card}
+            image={card.image}
             isAboutClicked={isAboutClicked}
             waitClick={waitClick}
             setIswaitClicked={setIswaitClicked}
             onSwipe={handleSwipe}
-            subscribe={subscribe} setIsSubscribe={setIsSubscribe} 
+            subscribe={subscribe} setIsSubscribe={setIsSubscribe}
             style={{
               zIndex: cards.length - index,
               transform: index > 0 ? `translateX(${index * 5}px) scale(${1 - index * 0.05})` : 'none',
@@ -130,12 +143,22 @@ const CardStack = forwardRef(({
       </AnimatePresence>
       {cards.length === 0 && (
         <div className="absolute inset-0 flex flex-col items-center justify-center rounded-3xl">
-          <div className="animate-float text-center p-6">
-            <h3 className="text-2xl font-medium mb-2">No more cards!</h3>
-            <p className="text-muted-foreground">Check back soon for more profiles</p>
+          <div className="relative h-[740px] mt-2 rounded-3xl flex flex-col items-center justify-center gap-[30px]">
+            <img src={icon} className="h-auto" alt="icon" />
+            <h1 className="px-[15px] text-center font-semibold text-[20px]">
+              You have met all
+              <br />
+              the little hearts waiting for support
+            </h1>
+            {countdown !== null && (
+              <p className="text-[#1A6864] text-lg font-medium">
+                Showing profiles again in {countdown}...
+              </p>
+            )}
           </div>
         </div>
       )}
+
     </div>
   );
 });

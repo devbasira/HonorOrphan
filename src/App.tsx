@@ -5,7 +5,9 @@ import CardStack from './components/CardStack';
 import { useIsMobile } from "./lib/isMobile"
 import { X } from 'lucide-react';
 
-
+import pic1 from './assets/pic1.png'
+import pic2 from './assets/pic2.png'
+import pic3 from './assets/pic3.png'
 
 interface CardData {
   id: string;
@@ -31,7 +33,7 @@ const initialCards: CardData[] = [
       'Basic daily essentials',
       'Healthcare access'
     ],
-    image: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400',
+    image: pic1,
     id: 'faris',
     description: ''
   },
@@ -46,7 +48,7 @@ const initialCards: CardData[] = [
       'Daily necessities',
       'Medical check-ups'
     ],
-    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400',
+    image:pic2,
     id: 'sarah',
     description: ''
   },
@@ -61,7 +63,7 @@ const initialCards: CardData[] = [
       'School uniform and supplies',
       'Regular meals and nutrition'
     ],
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400',
+    image: pic3,
     id: 'ahmed',
     description: ''
   }
@@ -72,7 +74,7 @@ function App() {
   const isMobile = useIsMobile()
   const [isAboutClicked, setIsAbout] = useState(false);
   const [waitClick, setIswaitClicked] = useState(false);
-  const [hasSelectedCard, setHasSelectedCard] = useState(false);
+  const [hasSelectedCard, setHasSelectedCard] = useState(true);
   const cardStackRef = useRef<any>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -81,7 +83,7 @@ function App() {
 
   return (
     <div className=" bg-[#FFFFF0] min-h-screen overflow-hidden">
-      <header className="w-screen justify-center  h-[100px] bg-[#FFFFF0] px-6 hidden lg:flex items-center">
+      <header className="w-screen justify-center h-[10vh] bg-[#FFFFF0] px-6 hidden lg:flex items-center">
         <div className="w-full pl-[40px] pr-[30px] max-w-[1200px] flex items-center  justify-between">
 
           <div className="w-[140px] h-auto p-1 rounded-sm">
@@ -92,19 +94,12 @@ function App() {
             
             <button
               onClick={() => {
-                setHasSelectedCard(!hasSelectedCard)
-                if(subscribe)
-                {
-                  setIsSubscribe(false)
-                }
-                if(showForm)
-                {
-                  setShowForm(false)
-                }
-                if(isSubmitted)
-                {
-                  setIsSubmitted(false)
-                }
+                setHasSelectedCard(!hasSelectedCard);        
+                // setShowIntro(false);             
+              
+                if (subscribe) setIsSubscribe(false);
+                if (showForm) setShowForm(false);
+                if (isSubmitted) setIsSubmitted(false);
               }}
               className={`font-semibold transition-all ${!hasSelectedCard
                 ? 'bg-red-500 hover:bg-red-600 h-[45px] w-[45px] rounded-full flex items-center justify-center'

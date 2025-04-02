@@ -6,9 +6,10 @@ import logo from '../assets/logo2.png'
 import icon from '../assets/icon.png'
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { db } from "../firebase";
+import '../index.css'
+import arrow from '../assets/arrow.svg'
+import { Video, Headphones } from 'lucide-react';
 
-
-import bgImage from '../assets/image.png';
 
 interface SwipeableCardProps {
   id: string;
@@ -47,7 +48,8 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   setIswaitClicked,
   isTopCard = false,
   subscribe,
-  setIsSubscribe
+  setIsSubscribe,
+  image
 
 }) => {
   const [exitX, setExitX] = useState<number | null>(null);
@@ -83,7 +85,6 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     name: '',
     email: ''
   })
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -142,7 +143,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     }
   };
 
-  
+
   const submitSubscription = async (data: any) => {
     try {
       const docRef = await addDoc(collection(db, "subscriptions"), {
@@ -195,6 +196,9 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         className
       )}
       style={{
+        transformOrigin: "center center",
+        backfaceVisibility: "hidden",
+        transformStyle: "preserve-3d",
         x,
         rotate: isTopCard ? rotate : 0,
         opacity,
@@ -205,6 +209,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       onDragEnd={(_, info) => isTopCard && handlePan(info)}
       whileTap={isTopCard ? { scale: 1 } : undefined}
+      // whileHover={isTopCard ? { x: 8 } : undefined}
       animate={exitX !== null ? { x: exitX } : {}}
       transition={{
         type: "spring",
@@ -219,10 +224,10 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     >
       <div className="rounded-3xl">
         <div
-          className="h-[calc(100vh-100px)] w-full md:w-[333px] md:h-[665px] lg:w-[333px] lg:h-[665px] rounded-lg  mb-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 relative rounded-3xl"
+          className="h-[calc(100vh-100px)] w-full md:w-[333px] md:h-[665px] lg:w-[333px] lg:h-[665px] rounded-lg  mb-4 cursor-pointer transform transition-all duration-300  relative rounded-3xl"
           onClick={onSelect}
           style={{
-            backgroundImage: `url(${bgImage})`,
+            backgroundImage: `url(${image})`,
             backgroundSize: "cover",
             backgroundPosition: "center"
           }}
@@ -240,8 +245,9 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
           >
             {
               showOverlayContent && (
+                <>
                 <button
-                  className="fixed flex items-center justify-center  bottom-[90px] right-[10px] lg:hidden p-2 rounded-full bg-white/80 hover:bg-white transition-colors w-[45px] h-[45px]"
+                  className="fixed flex items-center justify-center  bottom-[90px] left-[9%] lg:hidden p-2 rounded-full bg-white/80 hover:bg-white transition-colors w-[45px] h-[45px]"
                   onClick={() => setIsExpanded(!isExpanded)}
                 >
                   <motion.svg
@@ -258,18 +264,22 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                     <path d="M12 5v14M5 12h14" />
                   </motion.svg>
                 </button>
+                  <div className="lg:hidden md:hidden justify-between items-center fixed bottom-[90px] w-[80px] h-[50px] right-[9%]">
+                    <h1 className="text-gray-900 text-[16px]">Swipe</h1>
+                  <img className="w-[40px] h-[40px]" src={arrow} alt="" />
+                  </div>
+                </>
               )
             }
             {showOverlayContent && (
               <div className="flex items-baseline justify-between w-full gap-1">
-                <div className="flex items-baseline gap-2">
+                <div className="flex flex-col items-baseline">
                   <h2 className="text-[24px] font-semibold text-gray-700">{name}</h2>
                   <span className="font-medium text-sm text-gray-700">
                     {age} years, {location}
                   </span>
                 </div>
               </div>
-
             )}
             {showOverlayContent ? (
               <motion.div className="lg:hidden  flex flex-col">
@@ -290,28 +300,48 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
 
                 {isMobile ? (
                   <motion.div
-                    className="mb-5"
+                    className="mb-5 mt-5"
                     animate={{
                       display: isExpanded ? "block" : "none",
                       opacity: isExpanded ? 1 : 0
                     }}
 
                   >
-                    <h3 className="text-sm font-semibold mb-1">Key Needs:</h3>
+                    <h3 className="text-sm text-gray-700 font-semibold mb-1">Key Needs:</h3>
                     <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
                       {needs.map((need, index) => (
                         <li key={index}>{need}</li>
                       ))}
                     </ul>
+                    <div className=" space-y-3 mt-[30px]">
+                      <button className="w-full flex items-center justify-center px-[40px] gap-2 bg-amber-50 text-gray-700 py-3 rounded-xl hover:bg-amber-200 transition-colors">
+                        <Video size={20} />
+                        <span> Video Message</span>
+                      </button>
+
+                      <button className="w-full flex items-center justify-center px-[40px] gap-2 bg-amber-50 text-gray-700 py-3 rounded-xl hover:bg-amber-100 transition-colors">
+                        <Headphones size={20} />
+                        <span> Audio Message</span>
+                      </button>
+                      <button className="w-full flex items-center justify-center px-[40px] gap-2 bg-amber-50 text-gray-700 py-3 rounded-xl hover:bg-amber-100 transition-colors">
+                        <Headphones size={20} />
+                        <span>Online Meeting</span>
+                      </button>
+                      <button className="w-full flex items-center justify-center px-[40px] gap-2 bg-amber-50 text-gray-700  py-3 rounded-xl hover:bg-amber-100 transition-colors">
+                        <Headphones size={20} />
+                        <span>In-person Meeting</span>
+                      </button>
+                    </div>
                   </motion.div>
                 ) : (
-                  <div>
+                  <div className="">
                     <h3 className="text-sm font-semibold mb-1">Key Needs:</h3>
                     <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
                       {needs.map((need, index) => (
                         <li key={index}>{need}</li>
                       ))}
                     </ul>
+                    
                   </div>
                 )}
               </motion.div>
@@ -346,19 +376,19 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                           {
                             !subscribe && (
                               <>
-                              <div className="text-md w-full text-center text-[#1A6864] font-medium">Register as:</div>
-                          <select
-                            name="role"
-                            value={formData.role}
-                            onChange={handleChange}
-                            className="p-2 h-[45px] text-center rounded-lg border border-gray-400"
-                            required
-                          >
-                            <option value="">Select your role</option>
-                            <option value="donor">Donor</option>
-                            <option value="volunteer">Volunteer</option>
-                            <option value="orphanage">Orphanage</option>
-                          </select>
+                                <div className="text-md w-full text-center text-[#1A6864] font-medium">Register as:</div>
+                                <select
+                                  name="role"
+                                  value={formData.role}
+                                  onChange={handleChange}
+                                  className="p-2 h-[45px] text-center rounded-lg border border-gray-400"
+                                  required
+                                >
+                                  <option value="">Select your role</option>
+                                  <option value="donor">Donor</option>
+                                  <option value="volunteer">Volunteer</option>
+                                  <option value="orphanage">Orphanage</option>
+                                </select>
                               </>
                             )
                           }
@@ -588,42 +618,46 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                             </>
                           )}
 
-                         {
-                          !subscribe && (
-                            <>
-                            <button
-                              type="submit"
-                              className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-[#155a57] transition mx-auto"
-                            >
-                              Join the waitlist
-                            </button>
-  
-                            <p onClick={()=>{
-                              setIsSubscribe(true)
-                            }} className="text-center text-[#1A6864] text-sm underline cursor-pointer">
-                              or Just Subscribe for Update
-                            </p>
-                            </>
-                          )
-                         }
+                          {
+                            !subscribe && (
+                              <>
+                                <button
+                                  type="submit"
+                                  className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-[#155a57] transition mx-auto"
+                                >
+                                  Join the waitlist
+                                </button>
+
+                                <p onClick={() => {
+                                  setIsSubscribe(true)
+                                }} className="text-center text-[#1A6864] text-sm underline cursor-pointer">
+                                  or Just Subscribe for Update
+                                </p>
+                              </>
+                            )
+                          }
                         </motion.form>
 
                       </div>
                     )
                   }
                 </div>) : (
-                <div className="overflow-y-auto scrollbar-hide w-full h-full flex flex-col gap-[30px] justify-start items-start px-[20px] py-[60px]">
-                  <img className="w-[236px] h-120px[]" src={logo} alt="logo" />
+                <div className="overflow-y-auto scrollbar-hide w-full h-[85%] min-h-0 flex flex-col gap-[30px] justify-start items-start px-[7%] pt-[40px] pb-[40px] blur-bottom">
+                  <img className="w-[150px]" src={logo} alt="logo" />
                   <div className="flex flex-col">
                     <h1 className="text-[20px] font-semibold">
                       "No! But you do not honor the orphan."
                     </h1>
                     <p className="text-[16px] text-gray-600">- Quran 89:71</p>
                   </div>
-                  <div className="flex flex-col gap-[30px]">
-                    <p className="text-[16px] ">
-                      Honor the Orphan isn’t just about giving—it’s about honoring. Inspired by this Quranic call, our platform goes beyond sponsorship to nurture real, meaningful connections between sponsors and orphans. Through updates, letters, and engagement, sponsors become a source of love, stability, and hope. Because true care isn’t transactional—it’s about presence, protection, and belonging.
-                    </p>
+                  <div className="flex flex-col gap-[20px]">
+                    <div className="flex flex-col gap-[20px]">
+                      <p>
+                        <strong>Honor the Orphan</strong> is an upcoming platform that connects orphans with
+                        <strong> guardians of hope, hearts that care, and mentors who uplift</strong>—going
+                        beyond donations to build meaningful, life-changing relationships.
+                      </p>
+                    </div>
                     {isAboutClicked && (<p className="text-[16px] font-semibold">
                       We’re building the platform—join us from the start!
                     </p>)}

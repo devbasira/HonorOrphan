@@ -76,6 +76,7 @@ function App() {
   const cardStackRef = useRef<any>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [subscribe, setIsSubscribe] = useState(false);
 
 
   return (
@@ -92,6 +93,10 @@ function App() {
             <button
               onClick={() => {
                 setHasSelectedCard(!hasSelectedCard)
+                if(subscribe)
+                {
+                  setIsSubscribe(false)
+                }
                 if(showForm)
                 {
                   setShowForm(false)
@@ -126,6 +131,7 @@ function App() {
                 isAboutClicked={isAboutClicked}
                 waitClick={waitClick}
                 setIswaitClicked={setIswaitClicked}
+                subscribe={subscribe} setIsSubscribe={setIsSubscribe} 
                 className="lg:mt-6 md:mt-6 lg:pt-0 lg:pb-0 md:pt-0 md:pb-0 pb-[20px] pt-[10px] lg:mb-20"
               />
               {
@@ -142,6 +148,10 @@ function App() {
                     </button>
                     <button
                       onClick={() => {
+                        if(subscribe)
+                          {
+                            setIsSubscribe(false)
+                          }
                         setIsAbout(!isAboutClicked)
                         if (waitClick) {
                           setIswaitClicked(false);
@@ -198,7 +208,7 @@ function App() {
             </div>
           </div>
           <div className="ml-6  hidden lg:flex justify-center items-center  lg:col-span-2 md:col-span-3 h-[85vh] overflow-y-auto pr-2 scrollbar-hide">
-            <OrphanDetails showForm={showForm} setShowForm={setShowForm} setIsSubmitted={setIsSubmitted} isSubmitted={isSubmitted} setHasSelectedCard={setHasSelectedCard} showIntro={!hasSelectedCard} {...initialCards[currentIndex]} />
+            <OrphanDetails subscribe={subscribe} setIsSubscribe={setIsSubscribe}  showForm={showForm} setShowForm={setShowForm} setIsSubmitted={setIsSubmitted} isSubmitted={isSubmitted} setHasSelectedCard={setHasSelectedCard} showIntro={!hasSelectedCard} {...initialCards[currentIndex]} />
           </div>
         </div>
       </main>

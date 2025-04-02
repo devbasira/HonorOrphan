@@ -2,6 +2,7 @@ import { useImperativeHandle, forwardRef, useState, useRef, useEffect } from "re
 import { AnimatePresence } from "framer-motion";
 import SwipeableCard from "./SwipeableCard";
 import { cn } from "../lib/utils";
+import { subscribe } from "firebase/data-connect";
 
 interface CardData {
   id: string;
@@ -24,6 +25,8 @@ interface CardStackProps {
   waitClick: boolean,
   setIswaitClicked: any
   setHasSelectedCard : any
+  setIsSubscribe: any,
+  subscribe: boolean
 }
 
 const CardStack = forwardRef(({
@@ -33,7 +36,9 @@ const CardStack = forwardRef(({
   isAboutClicked,
   waitClick,
   setIswaitClicked,
-  setHasSelectedCard
+  setHasSelectedCard,
+  subscribe,
+  setIsSubscribe
 }: CardStackProps, ref) => {
 
 
@@ -114,6 +119,7 @@ const CardStack = forwardRef(({
             waitClick={waitClick}
             setIswaitClicked={setIswaitClicked}
             onSwipe={handleSwipe}
+            subscribe={subscribe} setIsSubscribe={setIsSubscribe} 
             style={{
               zIndex: cards.length - index,
               transform: index > 0 ? `translateX(${index * 5}px) scale(${1 - index * 0.05})` : 'none',

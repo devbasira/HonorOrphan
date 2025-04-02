@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import logo from '../assets/logo2.png';
 import icon from '../assets/icon.png';
 import { Video, Headphones } from 'lucide-react';
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { db } from "../firebase";
 
 interface OrphanDetailsProps {
   name: string;
@@ -17,7 +19,9 @@ interface OrphanDetailsProps {
   isSubmitted: boolean,
   setIsSubmitted: any
   setShowForm: any,
-  showForm: boolean
+  showForm: boolean,
+  setIsSubscribe: any,
+  subscribe: boolean
 }
 
 const OrphanDetails: React.FC<OrphanDetailsProps> = ({
@@ -31,7 +35,9 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
   isSubmitted,
   setIsSubmitted,
   setShowForm,
-  showForm
+  showForm,
+  setIsSubscribe,
+  subscribe
 }) => {
 
 
@@ -52,23 +58,75 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
   });
   const [isVolunteer, setIsVolunteer] = useState(false);
 
+  const [subData, setSubData] = useState({
+    name: '',
+    email: ''
+  })
+
+
+  const submitToFirebase = async (data: any) => {
+    try {
+      const docRef = await addDoc(collection(db, "preRegistrations"), {
+        ...data,
+        isVolunteer,
+        submittedAt: Timestamp.now()
+      });
+      console.log("Document written with ID: ", docRef.id);
+      return "success";
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      throw error;
+    }
+  };
+
+  const submitSubscription = async (data: any) => {
+    try {
+      const docRef = await addDoc(collection(db, "subscriptions"), {
+        name: data.name,
+        email: data.email,
+        submittedAt: Timestamp.now()
+      });
+      console.log("Subscription added with ID:", docRef.id);
+      return "success";
+    } catch (error) {
+      console.error("Subscription failed:", error);
+      throw error;
+    }
+  };
+
+  const handleSubChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    setSubData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const submitToFirebase = async (data: any) => {
-    console.log("Simulating Firebase submission...");
-    console.log(data);
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    // Simulate a network delay
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("success");
-      }, 1000);
-    });
-  };
+    console.log("Submitted Data:", subData);
+
+    try {
+      const response = await submitSubscription(subData);
+
+      if (response === "success") {
+        setIsSubmitted(true);
+        setShowForm(false);
+      }
+    } catch (error) {
+      console.error("Submission failed:", error);
+      alert("Something went wrong. Please try again later.");
+    }
+  }
+
+
+
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,6 +145,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
       alert("Something went wrong. Please try again later.");
     }
   };
+
 
 
 
@@ -132,18 +191,20 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
             className="flex flex-col justify-center gap-4 w-full max-w-[560px] mx-auto mt-4"
           >
             <div className="text-md w-full text-center text-[#1A6864] font-medium">Register as:</div>
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="p-2 h-[45px] text-center rounded-lg border border-gray-400"
-              required
-            >
-              <option value="">Select your role</option>
-              <option value="donor">Donor</option>
-              <option value="volunteer">Volunteer</option>
-              <option value="orphanage">Orphanage</option>
-            </select>
+            {!subscribe && (
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="p-2 h-[45px] text-center rounded-lg border border-gray-400"
+                required
+              >
+                <option value="">Select your role</option>
+                <option value="donor">Donor</option>
+                <option value="volunteer">Volunteer</option>
+                <option value="orphanage">Orphanage</option>
+              </select>
+            )}
             {formData.role === "volunteer" && (
               <>
                 <input
@@ -196,15 +257,15 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   </select>
                 </div>
                 {formData.interest === "other" && (
-                   <textarea 
-                   name="motivation"
-                   placeholder="How would you like to contribute?"
-                   value={formData.motivation}
-                   onChange={handleChange}
-                   className="p-2 h-[40px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
-                 />
+                  <textarea
+                    name="motivation"
+                    placeholder="How would you like to contribute?"
+                    value={formData.motivation}
+                    onChange={handleChange}
+                    className="p-2 h-[40px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                  />
                 )}
-                <textarea 
+                <textarea
                   name="motivation"
                   placeholder="Why do you want to volunteer? (optional)"
                   value={formData.motivation}
@@ -248,7 +309,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   onChange={handleChange}
                   className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                 />
-                 <input
+                <input
                   name="location"
                   placeholder="Location"
                   value={formData.location}
@@ -276,6 +337,32 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   onChange={handleChange}
                   className="p-2 h-[80px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                 />
+              </>
+            )}
+            {subscribe && (
+              <>
+                <input
+                  name="name"
+                  placeholder="Name*"
+                  value={subData.name}
+                  onChange={handleSubChange}
+                  required
+                  className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                />
+                <input
+                  name="email"
+                  placeholder="Email*"
+                  value={subData.email}
+                  onChange={handleSubChange}
+                  required
+                  className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                />
+                <button
+                  onClick={handleSubscribe}
+                  className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-[#155a57] transition mx-auto"
+                >
+                  Subscribe
+                </button>
               </>
             )}
 
@@ -343,16 +430,24 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
               </>
             )}
 
-            <button
-              type="submit"
-              className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-[#155a57] transition mx-auto"
-            >
-              Join the waitlist
-            </button>
+            {
+              !subscribe && (
+                <div className='w-full flex flex-col justify-between h-[90px] items-center'>
+                  <button
+                    type="submit"
+                    className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-[#155a57] transition mx-auto"
+                  >
+                    Join the waitlist
+                  </button>
 
-            <p className="text-center text-[#1A6864] text-sm underline cursor-pointer">
-              or Just Subscribe for Update
-            </p>
+                  <p onClick={() => {
+                    setIsSubscribe(true)
+                  }} className="text-center text-[#1A6864] text-sm underline cursor-pointer">
+                    or Just Subscribe for Update
+                  </p>
+                </div>
+              )
+            }
           </motion.form>
 
         </motion.div>

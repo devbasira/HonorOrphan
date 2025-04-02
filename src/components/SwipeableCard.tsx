@@ -4,6 +4,8 @@ import { cn } from "../lib/utils";
 import { useIsMobile } from "../lib/isMobile"
 import logo from '../assets/logo2.png'
 import icon from '../assets/icon.png'
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { db } from "../firebase";
 
 
 import bgImage from '../assets/image.png';
@@ -24,7 +26,9 @@ interface SwipeableCardProps {
   isTopCard?: boolean;
   isAboutClicked: boolean;
   waitClick: boolean;
-  setIswaitClicked: any
+  setIswaitClicked: any;
+  setIsSubscribe: any,
+  subscribe: boolean
 }
 
 const SwipeableCard: React.FC<SwipeableCardProps> = ({
@@ -42,6 +46,9 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   waitClick,
   setIswaitClicked,
   isTopCard = false,
+  subscribe,
+  setIsSubscribe
+
 }) => {
   const [exitX, setExitX] = useState<number | null>(null);
 
@@ -72,6 +79,11 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   });
   const [isVolunteer, setIsVolunteer] = useState(false);
 
+  const [subData, setSubData] = useState({
+    name: '',
+    email: ''
+  })
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -99,15 +111,18 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const submitToFirebase = async (data: any) => {
-    console.log("Simulating Firebase submission...");
-    console.log(data);
-
-    // Simulate a network delay
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("success");
-      }, 1000);
-    });
+    try {
+      const docRef = await addDoc(collection(db, "preRegistrations"), {
+        ...data,
+        isVolunteer,
+        submittedAt: Timestamp.now()
+      });
+      console.log("Document written with ID: ", docRef.id);
+      return "success";
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      throw error;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -126,6 +141,47 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
       alert("Something went wrong. Please try again later.");
     }
   };
+
+  
+  const submitSubscription = async (data: any) => {
+    try {
+      const docRef = await addDoc(collection(db, "subscriptions"), {
+        name: data.name,
+        email: data.email,
+        submittedAt: Timestamp.now()
+      });
+      console.log("Subscription added with ID:", docRef.id);
+      return "success";
+    } catch (error) {
+      console.error("Subscription failed:", error);
+      throw error;
+    }
+  };
+
+  const handleSubChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    setSubData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    console.log("Submitted Data:", subData);
+
+    try {
+      const response = await submitSubscription(subData);
+
+      if (response === "success") {
+        setFormSubmitted(true);
+      }
+    } catch (error) {
+      console.error("Submission failed:", error);
+      alert("Something went wrong. Please try again later.");
+    }
+  }
+
 
 
   return (
@@ -287,7 +343,10 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                           onSubmit={handleSubmit}
                           className="flex flex-col justify-center gap-4 w-full max-w-[560px] mx-auto mt-4"
                         >
-                          <div className="text-md w-full text-center text-[#1A6864] font-medium">Register as:</div>
+                          {
+                            !subscribe && (
+                              <>
+                              <div className="text-md w-full text-center text-[#1A6864] font-medium">Register as:</div>
                           <select
                             name="role"
                             value={formData.role}
@@ -300,6 +359,9 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                             <option value="volunteer">Volunteer</option>
                             <option value="orphanage">Orphanage</option>
                           </select>
+                              </>
+                            )
+                          }
                           {formData.role === "volunteer" && (
                             <>
                               <input
@@ -369,6 +431,33 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                               />
                             </>
                           )}
+                          {subscribe && (
+                            <>
+                              <input
+                                name="name"
+                                placeholder="Name*"
+                                value={subData.name}
+                                onChange={handleSubChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <input
+                                name="email"
+                                placeholder="Email*"
+                                value={subData.email}
+                                onChange={handleSubChange}
+                                required
+                                className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
+                              />
+                              <button
+                                onClick={handleSubscribe}
+                                className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-[#155a57] transition mx-auto"
+                              >
+                                Subscribe
+                              </button>
+                            </>
+                          )}
+
                           {formData.role === "donor" && (
                             <>
                               <label className="flex w-full justify-center items-center gap-2 text-sm">
@@ -499,16 +588,24 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                             </>
                           )}
 
-                          <button
-                            type="submit"
-                            className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-[#155a57] transition mx-auto"
-                          >
-                            Join the waitlist
-                          </button>
-
-                          <p className="text-center text-[#1A6864] text-sm underline cursor-pointer">
-                            or Just Subscribe for Update
-                          </p>
+                         {
+                          !subscribe && (
+                            <>
+                            <button
+                              type="submit"
+                              className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-[#155a57] transition mx-auto"
+                            >
+                              Join the waitlist
+                            </button>
+  
+                            <p onClick={()=>{
+                              setIsSubscribe(true)
+                            }} className="text-center text-[#1A6864] text-sm underline cursor-pointer">
+                              or Just Subscribe for Update
+                            </p>
+                            </>
+                          )
+                         }
                         </motion.form>
 
                       </div>

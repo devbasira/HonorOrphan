@@ -264,7 +264,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                     <path d="M12 5v14M5 12h14" />
                   </motion.svg>
                 </button>
-                  <div className="lg:hidden md:hidden justify-between items-center fixed bottom-[90px] w-[80px] h-[50px] right-[9%]">
+                  <div className="lg:hidden md:hidden flex justify-between items-center fixed bottom-[90px] w-[80px] h-[50px] right-[9%]">
                     <h1 className="text-gray-900 text-[16px]">Swipe</h1>
                   <img className="w-[40px] h-[40px]" src={arrow} alt="" />
                   </div>

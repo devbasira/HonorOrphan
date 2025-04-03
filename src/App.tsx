@@ -42,11 +42,11 @@ const initialCards: CardData[] = [
     age: 8,
     location: 'Mumbai, India',
     gender: 'Girl',
-    biography: 'Sarah has a bright smile that lights up any room. She shows remarkable resilience and maintains a positive attitude despite her circumstances. She loves art and dreams of becoming a teacher one day.',
+    biography: 'Sarah is gentle, reflective, and emotionally sensitive. Life without her parents has made her more introspective, but also deeply compassionate. She finds solace in quiet spaces and always lends a listening ear to others, even when she herself needs comfort..',
     needs: [
-      'Art supplies and educational materials',
-      'Daily necessities',
-      'Medical check-ups'
+      'Consistent emotional care',
+      'Support for Islamic and formal education',
+      'Clean clothing and hygiene essentials'
     ],
     image:pic2,
     id: 'sarah',
@@ -57,11 +57,11 @@ const initialCards: CardData[] = [
     age: 12,
     location: 'Bangalore, India',
     gender: 'Boy',
-    biography: 'Ahmed is a curious and intelligent boy who excels in mathematics. Despite facing challenges, he maintains excellent grades and helps younger children with their studies. He dreams of becoming an engineer.',
+    biography: 'Ahmed is cheerful, energetic, and full of curiosity. Though he lost his parents early, he hasn’t lost his spark. He loves exploring new things, asking questions, and helping others with a bright smile. Behind his playfulness is a child who deeply longs for stability and belonging.',
     needs: [
-      'Advanced study materials',
-      'School uniform and supplies',
-      'Regular meals and nutrition'
+      'Emotional care and mentorship',
+      'Educational support',
+      'Comfortable clothing and shoes'
     ],
     image: pic3,
     id: 'ahmed',

@@ -233,7 +233,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
           }}
         >
           <motion.div
-            className={`overlay gap-[20px] absolute bottom-0 w-full rounded-3xl bg-opacity-${showOverlayContent ? '75' : '70'} bg-[#D9D9D9] px-[40px] pt-[40px] flex flex-col justify-start`}
+            className={`overlay gap-[20px] overflow-y-auto absolute bottom-0   w-full rounded-3xl bg-opacity-${showOverlayContent ? '75' : '70'} bg-[#D9D9D9] px-[40px] py-[40px]  flex flex-col justify-start`}
             initial={false}
             animate={{
               height: overlayHeight
@@ -241,32 +241,31 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
             transition={{
               duration: 0.4,
               ease: "easeInOut"
-            }}
-          >
+            }}>
             {
               showOverlayContent && (
                 <>
-                <button
-                  className="fixed flex items-center justify-center  bottom-[90px] left-[9%] lg:hidden p-2 rounded-full bg-white/80 hover:bg-white transition-colors w-[45px] h-[45px]"
-                  onClick={() => setIsExpanded(!isExpanded)}
-                >
-                  <motion.svg
-                    width="25"
-                    height="25"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    animate={{
-                      rotate: isExpanded ? 45 : 0
-                    }}
+                  <button
+                    className="fixed flex items-center justify-center  bottom-[15%] left-[9%] lg:hidden p-2 rounded-full bg-white/80 hover:bg-white transition-colors w-[45px] h-[45px]"
+                    onClick={() => setIsExpanded(!isExpanded)}
                   >
-                    <path d="M12 5v14M5 12h14" />
-                  </motion.svg>
-                </button>
-                  <div className="lg:hidden md:hidden flex justify-between items-center fixed bottom-[90px] w-[80px] h-[50px] right-[9%]">
+                    <motion.svg
+                      width="25"
+                      height="25"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      animate={{
+                        rotate: isExpanded ? 45 : 0
+                      }}
+                    >
+                      <path d="M12 5v14M5 12h14" />
+                    </motion.svg>
+                  </button>
+                  <div className="lg:hidden md:hidden flex justify-between items-center fixed bottom-[15%] w-[80px] h-[50px] right-[9%]">
                     <h1 className="text-gray-900 text-[16px]">Swipe</h1>
-                  <img className="w-[40px] h-[40px]" src={arrow} alt="" />
+                    <img className="w-[40px] h-[40px]" src={arrow} alt="" />
                   </div>
                 </>
               )
@@ -341,7 +340,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                         <li key={index}>{need}</li>
                       ))}
                     </ul>
-                    
+
                   </div>
                 )}
               </motion.div>

@@ -233,7 +233,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
           }}
         >
           <motion.div
-            className={`overlay gap-[20px] overflow-y-auto absolute bottom-0   w-full rounded-3xl bg-opacity-${showOverlayContent ? '75' : '70'} bg-[#D9D9D9] px-[40px] py-[40px]  flex flex-col justify-start`}
+            className={`overlay gap-[20px] lg:overflow-y-hidden overflow-y-auto absolute bottom-0   w-full rounded-3xl bg-opacity-${showOverlayContent ? '75' : '70'} bg-[#D9D9D9] px-[40px] py-[40px]  flex flex-col justify-start`}
             initial={false}
             animate={{
               height: overlayHeight

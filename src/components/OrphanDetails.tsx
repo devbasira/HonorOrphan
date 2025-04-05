@@ -155,14 +155,18 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
       return (
         <div className="relative bg-[#D9D9D9] h-[740px] mt-2 rounded-3xl w-[740px] flex flex-col items-center justify-center gap-[30px]">
           <img src={icon} className=" h-auto" alt="icon" />
-          <h1 className="px-[15px] text-center  font-semibold text-[20px]">
-            You have met all
+          <h1 className="px-[15px] text-center  font-normal text-[16px]">
+            <h1 className='text-[30px] text-[#FFA500] font-semibold'>
+            Thank you!
+            </h1>
             <br />
-            the little hearts waiting for support
+          You’re now part of the Honor the Orphan community!
+          <br />
+           We’ll keep you updated on our journey
           </h1>
-          <h1 className=" text-[#1A6864] font-semibold text-[20px] text-center">
+          {/* <h1 className=" text-[#1A6864] font-semibold text-[20px] text-center">
             I want to meet them again!
-          </h1>
+          </h1> */}
         </div>
       );
     }
@@ -173,12 +177,15 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
           key="form"
           className="relative overflow-y-auto scrollbar-hide  items-center  bg-[#D9D9D9] h-[740px] mt-2 rounded-3xl w-[740px] flex flex-col px-[40px] py-[7%] gap-[20px] "
         >
-          <div className='relative overflow-y-auto scrollbar-hide  bg-[#D9D9D9] h-[740px] mt-2 rounded-3xl w-[740px] flex flex-col px-[40px] py-[20px] gap-[20px] '>
+          <div className='relative overflow-y-auto scrollbar-hide bg-[#D9D9D9] h-[740px] mt-2 rounded-3xl w-[740px] flex flex-col px-[40px] py-[20px] gap-[20px] '>
             <div className="flex justify-center w-full items-center ">
 
-              <h2 className="text-[24px] font-semibold text-gray-700">
+              <div className='flex flex-col w-full items-center gap-[10px]'>
+              <img src={icon} className=" h-auto" alt="icon" />
+              <h2 className="text-[30px] font-semibold text-gray-700">
                 Pre-registration Form
               </h2>
+              </div>
             </div>
             <p className="text-center text-[16px] text-gray-700">
               We’re building the platform—join us from the start!

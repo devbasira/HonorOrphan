@@ -70,31 +70,53 @@ const CardStack = forwardRef(({
     }
   }));
 
+  const [userInteracted, setUserInteracted] = useState(false);
+
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     let countdownInterval: NodeJS.Timeout;
-  
-    if (cards.length === 0) {
-      setCountdown(3);
-  
+
+    if (cards.length === 0 && !userInteracted) {
+      setCountdown(10);
+
       countdownInterval = setInterval(() => {
         setCountdown(prev => (prev !== null && prev > 0 ? prev - 1 : null));
-      }, 500); 
-  
+      }, 1000);
+
       timer = setTimeout(() => {
         setCards(initialCards || []);
-        setHistory([]);
         setIndex?.(0);
         setCountdown(null);
-      }, 1500);
+      }, 10000);
     }
-  
+
     return () => {
       clearTimeout(timer);
       clearInterval(countdownInterval);
     };
-  }, [cards, initialCards, setIndex]);
-  
+  }, [cards, initialCards, setIndex, userInteracted]);
+
+  const handleReset = () => {
+    setUserInteracted(true);
+    setCards(initialCards || []);
+    setIndex?.(0);
+    setCountdown(null);
+
+    setTimeout(() => setUserInteracted(false), 200);
+  };
+
+  const handleGoBack = () => {
+    if (!initialCards || initialCards.length === 0) return;
+
+    setUserInteracted(true);
+    const lastCard = initialCards[initialCards.length - 1];
+    setCards([lastCard]);
+    setIndex?.(initialCards.length - 1);
+    setCountdown(null);
+
+    setTimeout(() => setUserInteracted(false), 200);
+  };
+
 
 
   const handleSwipe = (id: string, direction: "left" | "right") => {
@@ -151,16 +173,27 @@ const CardStack = forwardRef(({
               the little hearts waiting for support
             </h1>
             {countdown !== null && (
-              <p className="text-[#1A6864] text-lg font-medium">
-                Showing profiles again in {countdown}...
-              </p>
+              <div className="flex flex-col gap-[10px]">
+                <button
+                  onClick={handleReset}
+                  className="bg-[#1A6874] text-white h-[30px] w-[130px] px-6 rounded-full"
+                >
+                  Reset
+                </button>
+                <button
+                  onClick={handleGoBack}
+                  className="bg-[#1A6874] text-white h-[30px] w-[130px] px-6 rounded-full"
+                >
+                  Go back
+                </button>
+              </div>
             )}
+
           </div>
         </div>
       )}
-
     </div>
   );
 });
-
+{/* {true && ( */ }
 export default CardStack;

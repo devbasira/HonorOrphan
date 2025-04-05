@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       boxShadow: {
-        figma: '0px 0px 15px rgba(0, 0, 0, 0.161)',
+        figma: '0px 0px 15px rgba(0, 0, 0, 0.111)',
       },
       screens: {
         '4k': '2560px',

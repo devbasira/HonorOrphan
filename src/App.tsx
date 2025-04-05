@@ -112,10 +112,10 @@ function App() {
         </div>
       </header>
 
-      <main className="flex justify-center items-center max-w-[1200px] mx-auto  lg:px-4">
+      <main className="flex bg-transparent justify-center items-center max-w-[1200px] mx-auto  lg:px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-8">
 
-          <div style={isMobile ? { height: '100dvh' } : {}} className="flex flex-col lg:col-span-1 md:col-span-1 md:w-full lg:w-full w-screen lg:h-auto md:h-auto h-screen lg:w-full  lg:border-gray-300 flex lg:justify-center md:justify-center justify-start lg:item-center md:items-center lg:overflow-x-auto md:overflow-x-auto  scrollbar-hide">
+          <div style={isMobile ? { height: '100dvh' } : {}} className="flex flex-col lg:col-span-1 md:col-span-1 md:w-full lg:w-full w-screen lg:h-auto md:h-auto h-screen lg:w-full  lg:border-gray-300 flex lg:justify-center md:justify-center justify-start lg:item-center md:items-center  lg:overflow-x-auto md:overflow-x-auto  scrollbar-hide">
             <div className="flex-col justify-center items-center ">
               <CardStack
                 ref={cardStackRef}
@@ -127,7 +127,7 @@ function App() {
                 waitClick={waitClick}
                 setIswaitClicked={setIswaitClicked}
                 subscribe={subscribe} setIsSubscribe={setIsSubscribe} 
-                className="lg:mt-6 md:mt-6 lg:pt-0 lg:pb-0 md:pt-0 md:pb-0 pb-[20px] pt-[10px] lg:mb-20"
+                className="lg:mt-6 md:mt-6 lg:pt-0 lg:pb-0 md:pt-0 md:pb-0 pb-[20px] pt-[20px] lg:mb-20"
               />
               {
                 isMobile ? (<div className=''>
@@ -202,7 +202,7 @@ function App() {
               }
             </div>
           </div>
-          <div className="ml-6  hidden lg:flex justify-center items-center  lg:col-span-2 md:col-span-3 h-[85vh] overflow-y-auto pr-2 scrollbar-hide">
+          <div className="ml-6 hidden lg:flex justify-center items-center  lg:col-span-2 md:col-span-3 h-[85vh] overflow-y-auto pr-2 scrollbar-hide">
             <OrphanDetails subscribe={subscribe} setIsSubscribe={setIsSubscribe}  showForm={showForm} setShowForm={setShowForm} setIsSubmitted={setIsSubmitted} isSubmitted={isSubmitted} setHasSelectedCard={setHasSelectedCard} showIntro={!hasSelectedCard} {...initialCards[currentIndex]} />
           </div>
         </div>

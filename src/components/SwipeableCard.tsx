@@ -189,8 +189,8 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     <motion.div
       ref={cardRef}
       className={cn(
-        "swipable-card lg:w-auto md:w-auto w-[calc(100vw-20px)] z-[1000] absolute",
-        "lg:h-[665px] md:h-[665px] h-[calc(100%-20px)]",
+        "swipable-card lg:w-auto md:w-auto w-[calc(100vw-40px)] z-[1000] absolute",
+        "lg:h-[665px] md:h-[665px] h-[calc(100%-40px)]",
         "transition-all duration-300 ease-in-out",
         "overflow-hidden rounded-3xl shadow-figma",
         className
@@ -237,6 +237,9 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
             initial={false}
             animate={{
               height: overlayHeight
+            }}
+            style={{
+              touchAction: 'pan-y'  // <--- This line is key
             }}
             transition={{
               duration: 0.4,
@@ -350,20 +353,23 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                   {
                     formSubmitted ? (<div className="w-full h-full flex flex-col items-center justify-center gap-[30px]">
                       <img src={icon} className="w-[50px] h-auto " alt="" />
-                      <h1 className="px-[15px] w-[210px] text-center text-[#989898] font-semibold text-[20px]">
-                        You have met all
-                        the little hearts waiting for support
-                      </h1>
-
-                      <h1 className="w-[140px]  text-[#1A6864] font-semibold text-[20px] text-center">
-                        I want to meet them again!
+                      <h1 className="px-[10px] w-[210px] text-center text-gray-700 font-normal text-[16px]">
+                        <h1 className='text-[30px] text-[#FFA500] font-semibold'>
+                          Thank you!
+                        </h1>
+                        <br />
+                        You’re now part of the Honor the Orphan community!
+                        <br />
+                        We’ll keep you updated on our journey
                       </h1>
                     </div>) : (
-                      <div className="overflow-y-auto scrollbar-hide w-full h-full flex flex-col gap-[30px] justify-start items-start pb-[20px]">
-                        <img className="w-[96px] h-auto" src={logo} alt="" />
+                      <div className="overflow-y-auto scrollbar-hide w-full h-full flex flex-col gap-[30px] justify-start items-start pt-[30px] bg-blue-200 pb-[20px]">
+                        <div className="w-full flex flex-col items-center gap-[10px]">
+                        <img className=" h-auto" src={icon} alt="" />
                         <h1 className="text-[24px] text-[#1A6874] font-semibold ">
-                          Pre-registration From
+                          Pre-registration Form
                         </h1>
+                        </div>
                         <motion.form
                           initial={{ y: 300, opacity: 0 }}
                           animate={{ y: 0, opacity: 1 }}
@@ -624,7 +630,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                                   type="submit"
                                   className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-[#155a57] transition mx-auto"
                                 >
-                                  Join the waitlist
+                                  Pre Register
                                 </button>
 
                                 <p onClick={() => {
@@ -668,7 +674,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                     <button onClick={() => {
                       setIswaitClicked(!waitClick);
                     }} className="bg-[#FFFFF0] w-[212px] h-[45px] rounded-full text-[#1A6864] font-semibold text-[16px] mb-[10px]">
-                      Join the waitlist
+                      Pre Register
                     </button>
                   </div>
                 </div>

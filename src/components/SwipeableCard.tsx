@@ -249,7 +249,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
               showOverlayContent && (
                 <>
                   <button
-                    className="fixed flex items-center justify-center  bottom-[15%] left-[9%] lg:hidden p-2 rounded-full bg-white/80 hover:bg-white transition-colors w-[45px] h-[45px]"
+                    className="fixed flex items-center justify-center  bottom-[17%] left-[9%] lg:hidden p-2 rounded-full bg-white/80 hover:bg-white transition-colors w-[45px] h-[45px]"
                     onClick={() => setIsExpanded(!isExpanded)}
                   >
                     <motion.svg
@@ -266,7 +266,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                       <path d="M12 5v14M5 12h14" />
                     </motion.svg>
                   </button>
-                  <div className="lg:hidden md:hidden flex justify-between items-center fixed bottom-[15%] w-[80px] h-[50px] right-[9%]">
+                  <div className="lg:hidden md:hidden flex justify-between items-center fixed bottom-[17%] w-[80px] h-[50px] right-[9%]">
                     <h1 className="text-gray-900 text-[16px]">Swipe</h1>
                     <img className="w-[40px] h-[40px]" src={arrow} alt="" />
                   </div>
@@ -363,7 +363,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                         We’ll keep you updated on our journey
                       </h1>
                     </div>) : (
-                      <div className="overflow-y-auto scrollbar-hide w-full h-full flex flex-col gap-[30px] justify-start items-start pt-[30px] bg-blue-200 pb-[20px]">
+                      <div className="overflow-y-auto scrollbar-hide w-full h-full flex flex-col gap-[30px] justify-start items-start pt-[30px]  pb-[20px]">
                         <div className="w-full flex flex-col items-center gap-[10px]">
                         <img className=" h-auto" src={icon} alt="" />
                         <h1 className="text-[24px] text-[#1A6874] font-semibold ">
@@ -444,7 +444,6 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                                   <option value="Fundraising & Awareness">Fundraising & Awareness</option>
                                   <option value="Tech & Design Support"> Tech & Design Support</option>
                                   <option value="Administrative & Outreach Support">Administrative & Outreach Support</option>
-                                  <option value="Tech & Design Support"> Tech & Design Support</option>
                                   <option value="other"> Other</option>
                                 </select>
                               </div>

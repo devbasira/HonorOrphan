@@ -261,7 +261,6 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                       <option value="Fundraising & Awareness">Fundraising & Awareness</option>
                       <option value="Tech & Design Support"> Tech & Design Support</option>
                       <option value="Administrative & Outreach Support">Administrative & Outreach Support</option>
-                      <option value="Tech & Design Support"> Tech & Design Support</option>
                       <option value="other"> Other</option>
                     </select>
                   </div>

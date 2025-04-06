@@ -179,7 +179,7 @@ const CardStack = forwardRef(({
                   className="bg-[#1A6874] hover:bg-[#14545d] active:scale-95 transition-all duration-150 text-white h-[30px] w-[130px] px-6 rounded-full focus:outline-none focus:ring-2 focus:ring-[#1A6874]/50"
                 >
                   Reset
-                </button>
+                </button>  
 
                 <button
                   onClick={handleGoBack}

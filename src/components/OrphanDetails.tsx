@@ -157,12 +157,12 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
           <img src={icon} className=" h-auto" alt="icon" />
           <h1 className="px-[15px] text-center  font-normal text-[16px]">
             <h1 className='text-[30px] text-[#FFA500] font-semibold'>
-            Thank you!
+              Thank you!
             </h1>
             <br />
-          You’re now part of the Honor the Orphan community!
-          <br />
-           We’ll keep you updated on our journey
+            You’re now part of the Honor the Orphan community!
+            <br />
+            We’ll keep you updated on our journey
           </h1>
           {/* <h1 className=" text-[#1A6864] font-semibold text-[20px] text-center">
             I want to meet them again!
@@ -175,16 +175,16 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
       return (
         <motion.div
           key="form"
-          className="relative overflow-y-auto scrollbar-hide  items-center  bg-[#D9D9D9] h-[740px] mt-2 rounded-3xl w-[740px] flex flex-col px-[40px] py-[7%] gap-[20px] "
+          className="relative overflow-y-auto scrollbar-hide  items-center  bg-[#D9D9D9] h-[735px]  min-h-[400px] max-h-[90vh] mt-2 rounded-3xl w-[740px] flex flex-col px-[40px] py-[7%] gap-[20px] "
         >
           <div className='relative overflow-y-auto scrollbar-hide bg-[#D9D9D9] h-[740px] mt-2 rounded-3xl w-[740px] flex flex-col px-[40px] py-[20px] gap-[20px] '>
             <div className="flex justify-center w-full items-center ">
 
               <div className='flex flex-col w-full items-center gap-[10px]'>
-              <img src={icon} className=" h-auto" alt="icon" />
-              <h2 className="text-[30px] font-semibold text-gray-700">
-                Pre-registration Form
-              </h2>
+                <img src={icon} className=" h-auto" alt="icon" />
+                <h2 className="text-[30px] font-semibold text-gray-700">
+                  Pre-registration Form
+                </h2>
               </div>
             </div>
             <p className="text-center text-[16px] text-gray-700">
@@ -199,7 +199,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
               className="flex flex-col justify-center gap-4 w-full max-w-[560px] mx-auto mt-4"
             >
               <div className="text-md w-full text-center text-gray-700  font-medium">{
-              subscribe? 'Subscribe: ' : 'Register as:'}</div>
+                subscribe ? 'Subscribe: ' : 'Register as:'}</div>
               {!subscribe && (
                 <select
                   name="role"
@@ -234,9 +234,16 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   />
                   <input
                     name="whatsapp"
-                    placeholder="WhatsApp Number with country code"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="WhatsApp Number* (Include country code)"
                     value={formData.whatsapp}
                     onChange={handleChange}
+                    onInput={(e) => {
+                      const target = e.target as HTMLInputElement;
+                      target.value = target.value.replace(/(?!^\+)\D/g, "");
+                    }}
+                    required
                     className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                   />
                   <input
@@ -312,9 +319,16 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   />
                   <input
                     name="whatsapp"
-                    placeholder="WhatsApp Number with country code"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="WhatsApp Number* (Include country code)"
                     value={formData.whatsapp}
                     onChange={handleChange}
+                    onInput={(e) => {
+                      const target = e.target as HTMLInputElement;
+                      target.value = target.value.replace(/(?!^\+)\D/g, "");
+                    }}
+                    required
                     className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                   />
                   <input
@@ -366,18 +380,18 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                     className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                   />
                   <div className='w-full flex flex-col gap-[5px]'>
-                  <button
-                    onClick={handleSubscribe}
-                    className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-teal-800 transition mx-auto"
-                  >
-                    Subscribe
-                  </button>
-                  <p
-                    onClick={() => setIsSubscribe(false)}
-                    className="text-center text-gray-700 underline cursor-pointer font-medium"
-                  >
-                    Go Back
-                  </p>
+                    <button
+                      onClick={handleSubscribe}
+                      className="bg-[#1A6864] w-[212px] h-[45px] mt-[10px] text-white py-2 rounded-full font-semibold hover:bg-teal-800 transition mx-auto"
+                    >
+                      Subscribe
+                    </button>
+                    <p
+                      onClick={() => setIsSubscribe(false)}
+                      className="text-center text-gray-700 underline cursor-pointer font-medium"
+                    >
+                      Go Back
+                    </p>
                   </div>
 
                 </>
@@ -422,6 +436,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                     name="boysCount"
                     type="number"
                     placeholder="No. of Boys*"
+                    min="0"
                     value={formData.boysCount || ""}
                     onChange={handleChange}
                     required
@@ -430,6 +445,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   <input
                     name="girlsCount"
                     type="number"
+                    min="0"
                     placeholder="No. of Girls*"
                     value={formData.girlsCount || ""}
                     onChange={handleChange}
@@ -438,9 +454,15 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   />
                   <input
                     name="whatsapp"
+                    type="text"
+                    inputMode="numeric"
                     placeholder="WhatsApp Number* (Include country code)"
                     value={formData.whatsapp}
                     onChange={handleChange}
+                    onInput={(e) => {
+                      const target = e.target as HTMLInputElement;
+                      target.value = target.value.replace(/(?!^\+)\D/g, "");
+                    }}
                     required
                     className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                   />
@@ -472,7 +494,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
       );
     }
     return (
-      <div className="relative bg-[#E4E4E4] h-[735px] mt-3 rounded-3xl w-[740px] flex flex-col px-[50px] py-[50px] gap-[30px]">
+      <div className="relative bg-[#E4E4E4] flex flex-col overflow-y-auto justify-start h-[735px] min-h-[400px] max-h-[90vh] mt-3 rounded-3xl w-[740px] flex flex-col px-[50px] py-[50px] gap-[30px]">
         <img className="w-[200px] h-auto" src={logo} alt="Logo" />
         <div className="flex flex-col mt-[40px]">
           <h1 className="text-[20px] font-semibold text-gray-800">
@@ -507,7 +529,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
   }
 
   return (
-    <div className="bg-[#FEF6E1] h-[735px] mt-4 px-[50px] py-[50px] rounded-3xl w-[740px]">
+    <div className="bg-[#FEF6E1] flex flex-col overflow-y-auto justify-start min-h-[400px] max-h-[90vh] mt-4 px-[50px] py-8 rounded-3xl w-[740px] scrollbar-hide">
       <div className="mb-6">
         <div className="text-[48px] text-gray-700 leading-none font-semibold ">
           {name}, {age}

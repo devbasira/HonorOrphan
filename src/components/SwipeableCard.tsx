@@ -365,10 +365,10 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                     </div>) : (
                       <div className="overflow-y-auto scrollbar-hide w-full h-full flex flex-col gap-[30px] justify-start items-start pt-[30px]  pb-[20px]">
                         <div className="w-full flex flex-col items-center gap-[10px]">
-                        <img className=" h-auto" src={icon} alt="" />
-                        <h1 className="text-[24px] text-[#1A6874] font-semibold ">
-                          Pre-registration Form
-                        </h1>
+                          <img className=" h-auto" src={icon} alt="" />
+                          <h1 className="text-[24px] text-[#1A6874] font-semibold ">
+                            Pre-registration Form
+                          </h1>
                         </div>
                         <motion.form
                           initial={{ y: 300, opacity: 0 }}
@@ -417,9 +417,16 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                               />
                               <input
                                 name="whatsapp"
-                                placeholder="WhatsApp Number with country code"
+                                type="text"
+                                inputMode="numeric"
+                                placeholder="WhatsApp Number* (Include country code)"
                                 value={formData.whatsapp}
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                  const sanitizedValue = e.target.value.replace(/(?!^\+)\D/g, "");
+                                  setFormData(prev => ({ ...prev, whatsapp: sanitizedValue }));
+                                }}
+                                required
+                                maxLength={15}
                                 className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                               />
                               <input
@@ -520,11 +527,18 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                                 required
                                 className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                               />
-                              <input
+                             <input
                                 name="whatsapp"
-                                placeholder="WhatsApp Number with country code"
+                                type="text"
+                                inputMode="numeric"
+                                placeholder="WhatsApp Number* (Include country code)"
                                 value={formData.whatsapp}
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                  const sanitizedValue = e.target.value.replace(/(?!^\+)\D/g, "");
+                                  setFormData(prev => ({ ...prev, whatsapp: sanitizedValue }));
+                                }}
+                                required
+                                maxLength={15}
                                 className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                               />
                               <input
@@ -613,10 +627,16 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                               />
                               <input
                                 name="whatsapp"
+                                type="text"
+                                inputMode="numeric"
                                 placeholder="WhatsApp Number* (Include country code)"
                                 value={formData.whatsapp}
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                  const sanitizedValue = e.target.value.replace(/(?!^\+)\D/g, "");
+                                  setFormData(prev => ({ ...prev, whatsapp: sanitizedValue }));
+                                }}
                                 required
+                                maxLength={15}
                                 className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                               />
                             </>

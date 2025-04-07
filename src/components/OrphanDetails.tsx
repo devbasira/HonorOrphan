@@ -164,9 +164,6 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
             <br />
             We’ll keep you updated on our journey
           </h1>
-          {/* <h1 className=" text-[#1A6864] font-semibold text-[20px] text-center">
-            I want to meet them again!
-          </h1> */}
         </div>
       );
     }
@@ -214,7 +211,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   <option value="orphanage">Orphanage</option>
                 </select>
               )}
-              {formData.role === "volunteer" && (
+              {formData.role === "volunteer" && !subscribe && (
                 <>
                   <input
                     name="name"
@@ -289,7 +286,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   />
                 </>
               )}
-              {formData.role === "donor" && (
+              {formData.role === "donor" && !subscribe && (
                 <>
                   <label className="flex w-full justify-center items-center gap-2 text-sm">
                     <input
@@ -397,7 +394,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                 </>
               )}
 
-              {formData.role === "orphanage" && (
+              {formData.role === "orphanage" && !subscribe && (
                 <>
                   <input
                     name="orphanageName"

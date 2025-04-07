@@ -4,7 +4,7 @@ import logo from './assets/logo2.png';
 import CardStack from './components/CardStack';
 import { useIsMobile } from "./lib/isMobile"
 import { X } from 'lucide-react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useAnimation } from 'framer-motion';
 import pic1 from './assets/pic1.png'
 import pic2 from './assets/pic2.png'
 import pic3 from './assets/pic3.png'
@@ -48,7 +48,7 @@ const initialCards: CardData[] = [
       'Support for Islamic and formal education',
       'Clean clothing and hygiene essentials'
     ],
-    image:pic2,
+    image: pic2,
     id: 'sarah',
     description: ''
   },
@@ -79,22 +79,36 @@ function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [subscribe, setIsSubscribe] = useState(false);
+
   const [showSplash, setShowSplash] = useState(true);
-  
+
+  const controls = useAnimation();
+
   useEffect(() => {
     const isMobileScreen = window.innerWidth <= 768;
-  
-    if (isMobileScreen) {
-      const timer = setTimeout(() => {
-        setShowSplash(false);
-      }, 2500);
-  
-      return () => clearTimeout(timer);
-    } else {
+
+    if (!isMobileScreen) {
       setShowSplash(false);
+    } else {
+      controls.start({
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        transition: { delay: 0.3, duration: 0.8, ease: "easeOut" },
+      });
+
+      const delay = setTimeout(() => {
+        controls.start({
+          y: -30,
+          transition: { duration: 0.6, ease: "easeOut" },
+        });
+      }, 1200);
+
+      return () => clearTimeout(delay);
     }
   }, []);
-  
+
+
   if (showSplash) {
     return (
       <AnimatePresence>
@@ -109,16 +123,32 @@ function App() {
           <motion.img
             src={logo}
             alt="Honor the Orphan"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+            initial={{ opacity: 0, scale: 0.8, y: 0 }}
+            animate={controls}
             className="w-[180px] h-auto mb-4"
           />
-         
+          <motion.div
+            initial={{ opacity: 0, }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.6, duration: 0.6, ease: 'easeIn' }}
+            className="flex flex-col items-center gap-4 px-6 text-center">
+            <p className="text-[#1A6864] text-md max-w-[320px]">
+              Join the mission to transform orphan care, treating each one individually, with kindness and honor.
+            </p>
+            <motion.button
+              onClick={() => setShowSplash(false)}
+              whileTap={{ scale: 0.95 }}
+              className="mt-2 px-6 py-2 bg-[#FFA500]  hover:bg-orange-400 text-white rounded-full font-semibold text-lg transition"
+            >
+              بِسْمِ ٱللّٰهِ
+            </motion.button>
+          </motion.div>
         </motion.div>
       </AnimatePresence>
     );
   }
+
+
 
 
   return (
@@ -131,12 +161,12 @@ function App() {
           </div>
 
           <div className="flex items-center flex-grow justify-end gap-4">
-            
+
             <button
               onClick={() => {
-                setHasSelectedCard(!hasSelectedCard);        
+                setHasSelectedCard(!hasSelectedCard);
                 // setShowIntro(false);             
-              
+
                 if (subscribe) setIsSubscribe(false);
                 if (showForm) setShowForm(false);
                 if (isSubmitted) setIsSubmitted(false);
@@ -166,7 +196,7 @@ function App() {
                 isAboutClicked={isAboutClicked}
                 waitClick={waitClick}
                 setIswaitClicked={setIswaitClicked}
-                subscribe={subscribe} setIsSubscribe={setIsSubscribe} 
+                subscribe={subscribe} setIsSubscribe={setIsSubscribe}
                 className="lg:mt-6 md:mt-6 lg:pt-0 lg:pb-0 md:pt-0 md:pb-0 pb-[20px] pt-[20px] lg:mb-20"
               />
               {
@@ -174,19 +204,23 @@ function App() {
                   <div className="border-t fixed  bottom-0 left-0 w-[340px] flex justify-between items-center px-[20px] md:mt-6 lg:mt-5 h-[14vh] w-screen">
                     <button
                       onClick={() => {
-                        setIsAbout(!isAboutClicked)
+                        if(!isAboutClicked)
+                        {
+                          setIsAbout(true)
+                        }
                         setIswaitClicked(true);
                       }}
-                      className="bg-[#FFA500] w-[60%] h-[50%] hover:bg-orange-400 text-white font-semibold py-2 px-6 rounded-full transition-all"
+                      disabled={waitClick}
+                      className={`w-[60%] h-[50%] font-semibold py-2 px-6 rounded-full transition-all 
+                          ${waitClick ? "bg-orange-300 cursor-not-allowed" : "bg-[#FFA500] hover:bg-orange-400 text-white"}`}
                     >
                       Honor {initialCards[currentIndex].name}
                     </button>
                     <button
                       onClick={() => {
-                        if(subscribe)
-                          {
-                            setIsSubscribe(false)
-                          }
+                        if (subscribe) {
+                          setIsSubscribe(false)
+                        }
                         setIsAbout(!isAboutClicked)
                         if (waitClick) {
                           setIswaitClicked(false);
@@ -221,7 +255,7 @@ function App() {
                         setHasSelectedCard(false)
                         setShowForm(true)
                       }}
-                      className="bg-[#FFA500] w-[200px] hover:bg-orange-400 text-white font-semibold py-2 h-[45px] rounded-full transition-all"
+                      className="bg-[#FFA500]  hover:bg-orange-400 text-white w-[200px] font-semibold py-2 h-[45px] rounded-full transition-all"
                     >
                       Honor {initialCards[currentIndex].name}
                     </button>
@@ -243,7 +277,7 @@ function App() {
             </div>
           </div>
           <div className="ml-6 hidden lg:flex justify-center items-center  lg:col-span-2 md:col-span-3 h-[85vh] overflow-y-auto pr-2 scrollbar-hide">
-            <OrphanDetails subscribe={subscribe} setIsSubscribe={setIsSubscribe}  showForm={showForm} setShowForm={setShowForm} setIsSubmitted={setIsSubmitted} isSubmitted={isSubmitted} setHasSelectedCard={setHasSelectedCard} showIntro={!hasSelectedCard} {...initialCards[currentIndex]} />
+            <OrphanDetails subscribe={subscribe} setIsSubscribe={setIsSubscribe} showForm={showForm} setShowForm={setShowForm} setIsSubmitted={setIsSubmitted} isSubmitted={isSubmitted} setHasSelectedCard={setHasSelectedCard} showIntro={!hasSelectedCard} {...initialCards[currentIndex]} />
           </div>
         </div>
       </main>

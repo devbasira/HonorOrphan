@@ -99,10 +99,10 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   const overlayHeight = isAboutClicked
     ? "100%"
     : isExpanded
-    ? "100%"
-    : isMobile
-    ? "45.333333%"
-    : "20%";
+      ? "100%"
+      : isMobile
+        ? "45.333333%"
+        : "20%";
 
   const showOverlayContent = !isAboutClicked;
 
@@ -228,7 +228,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
           }}
         >
           <motion.div
-             className={`overlay gap-[20px] lg:overflow-y-hidden overflow-y-auto absolute bottom-0 ${isExpanded || (waitClick) ? 'opacity-100' : 'opacity-90'} w-full rounded-3xl bg-[#D9D9D9] px-[40px] py-[40px] flex flex-col justify-start`}
+            className={`overlay gap-[20px] lg:overflow-y-hidden overflow-y-auto absolute bottom-0 ${isExpanded || (waitClick) ? 'opacity-100' : 'opacity-90'} w-full rounded-3xl bg-[#D9D9D9] px-[40px] py-[40px] flex flex-col justify-start`}
             initial={false}
             animate={{
               height: overlayHeight,
@@ -348,12 +348,15 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                     </h1>
                   </div>
                 ) : (
-                  <div className="overflow-y-auto  scrollbar-hide w-full h-full flex flex-col gap-[30px] justify-start items-start pt-[30px]  pb-[20px]">
+                  <div className="overflow-y-auto scrollbar-hide w-full h-full flex flex-col gap-[30px] justify-start items-start pt-[30px] mb-[60px] pb-[20px]">
                     <div className="w-full flex flex-col items-center gap-[10px]">
                       <img className=" h-auto" src={icon} alt="" />
                       <h1 className="text-[24px] text-[#1A6874] font-semibold ">
                         Pre-registration Form
                       </h1>
+                      <p className="text-center text-[16px] text-gray-700">
+                        We’re building the platform—join us from the start!
+                      </p>
                     </div>
                     <motion.form
                       initial={{ y: 300, opacity: 0 }}
@@ -503,6 +506,12 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                           >
                             Subscribe
                           </button>
+                          <p
+                            onClick={() => setIsSubscribe(false)}
+                            className="text-center text-gray-700 underline cursor-pointer font-medium"
+                          >
+                            Go Back
+                          </p>
                         </>
                       )}
 

@@ -1,10 +1,10 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import OrphanDetails from './components/OrphanDetails';
 import logo from './assets/logo2.png';
 import CardStack from './components/CardStack';
 import { useIsMobile } from "./lib/isMobile"
 import { X } from 'lucide-react';
-
+import { AnimatePresence, motion } from 'framer-motion';
 import pic1 from './assets/pic1.png'
 import pic2 from './assets/pic2.png'
 import pic3 from './assets/pic3.png'
@@ -79,6 +79,46 @@ function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [subscribe, setIsSubscribe] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
+  
+  useEffect(() => {
+    const isMobileScreen = window.innerWidth <= 768;
+  
+    if (isMobileScreen) {
+      const timer = setTimeout(() => {
+        setShowSplash(false);
+      }, 2500);
+  
+      return () => clearTimeout(timer);
+    } else {
+      setShowSplash(false);
+    }
+  }, []);
+  
+  if (showSplash) {
+    return (
+      <AnimatePresence>
+        <motion.div
+          key="splash"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8 }}
+          className="w-screen h-screen flex flex-col justify-center items-center bg-[#FFFFF0]"
+        >
+          <motion.img
+            src={logo}
+            alt="Honor the Orphan"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+            className="w-[180px] h-auto mb-4"
+          />
+         
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
 
 
   return (

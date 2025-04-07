@@ -693,7 +693,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                             }}
                             className="text-center text-[#1A6864] text-sm underline cursor-pointer"
                           >
-                            or Just Subscribe for Update
+                            or just subscribe for update
                           </p>
                         </>
                       )}

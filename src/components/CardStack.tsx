@@ -142,7 +142,7 @@ const CardStack = forwardRef(({
   return (
     <div
       ref={stackRef}
-      className={cn("flex justify-center relative card-stack w-full mx-auto h-[85dvh] lg:my-0 md:my-0  lg:h-[600px] md:h-[600px]", "transition-all duration-300 ease-in-out", className)}>
+      className={cn("flex  justify-center relative card-stack w-full mx-auto h-[85dvh] lg:my-0 md:my-0  lg:h-[600px] md:h-[600px]", "transition-all duration-300 ease-in-out", className)}>
       <AnimatePresence>
         {cards.map((card, index) => (
           <SwipeableCard

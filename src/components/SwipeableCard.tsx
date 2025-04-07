@@ -233,13 +233,13 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
           }}
         >
           <motion.div
-            className={`overlay gap-[20px] lg:overflow-y-hidden overflow-y-auto absolute bottom-0   w-full rounded-3xl bg-opacity-${showOverlayContent ? '75' : '70'} bg-[#D9D9D9] px-[40px] py-[40px]  flex flex-col justify-start`}
+            className={`overlay gap-[20px]  lg:overflow-y-hidden overflow-y-auto absolute bottom-0   w-full rounded-3xl bg-[#D9D9D9] px-[40px] py-[40px] flex flex-col justify-start`}
             initial={false}
             animate={{
               height: overlayHeight
             }}
             style={{
-              touchAction: 'pan-y'  // <--- This line is key
+              touchAction: 'pan-y' 
             }}
             transition={{
               duration: 0.4,
@@ -247,9 +247,9 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
             }}>
             {
               showOverlayContent && (
-                <>
-                  <button
-                    className="fixed flex items-center justify-center  bottom-[17%] left-[9%] lg:hidden p-2 rounded-full bg-white/80 hover:bg-white transition-colors w-[45px] h-[45px]"
+                <div className="flex lg:hidden fixed left-0 bottom-[8%] justify-between w-full bg-[#D9D9D9] opacity-85  items-center px-[22.5px] h-[90px] py-[5%]">
+                  <button 
+                    className=" flex items-center justify-center lg:hidden p-2 rounded-full bg-white/80 hover:bg-white transition-colors w-[45px] h-[45px]"
                     onClick={() => setIsExpanded(!isExpanded)}
                   >
                     <motion.svg
@@ -266,11 +266,13 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
                       <path d="M12 5v14M5 12h14" />
                     </motion.svg>
                   </button>
-                  <div className="lg:hidden md:hidden flex justify-between items-center fixed bottom-[17%] w-[80px] h-[50px] right-[9%]">
+                  {!isExpanded && (
+                    <div className="lg:hidden md:hidden flex justify-between items-center  w-[80px] h-[50px] ">
                     <h1 className="text-gray-900 text-[16px]">Swipe</h1>
                     <img className="w-[40px] h-[40px]" src={arrow} alt="" />
                   </div>
-                </>
+                  )}
+                </div>
               )
             }
             {showOverlayContent && (

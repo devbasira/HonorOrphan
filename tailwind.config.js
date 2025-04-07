@@ -8,7 +8,7 @@ export default {
       },
       screens: {
         '4k': '2560px',
-        'xs': '320px',
+        'xs': '325px',
         sm: '640px',
         md: '768px',
         lg: '1024px',

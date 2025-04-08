@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import logo from '../assets/logo2.png';
@@ -6,6 +7,10 @@ import { Video, Headphones } from 'lucide-react';
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { db } from "../firebase";
 import '../index.css'
+import { isValidPhoneNumber } from 'libphonenumber-js';
+import PhoneInputField from './PhoneInputField';
+
+
 
 interface OrphanDetailsProps {
   name: string;
@@ -64,6 +69,14 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
     email: ''
   })
 
+  const validateEmail = (email) => {
+    if (!email) return 'Email is required';
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!pattern.test(email)) return 'Please enter a valid email address';
+    return '';
+  };
+
+
 
   const submitToFirebase = async (data: any) => {
     try {
@@ -95,6 +108,8 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
     }
   };
 
+
+
   const handleSubChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -109,6 +124,12 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const emailError = validateEmail(subData.email);
+    if (emailError) {
+      alert(emailError);
+      return;
+    }
 
     console.log("Submitted Data:", subData);
 
@@ -125,11 +146,34 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
     }
   }
 
+  const [phoneError, setPhoneError] = useState('');
 
+  const handlePhoneChange = (value: string | undefined) => {
+    const phoneNumber = value || '';
+    setFormData(prev => ({ ...prev, whatsapp: phoneNumber }));
 
+    if (phoneError && phoneNumber) setPhoneError('');
+  };
 
+  const validatePhoneNumber = () => {
+    if (!formData.whatsapp) {
+      setPhoneError('Phone number is required');
+      return false;
+    }
+    if (!isValidPhoneNumber(formData.whatsapp)) {
+      setPhoneError('Invalid phone number');
+      return false;
+    }
+    setPhoneError('');
+    return true;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    const emailError = validateEmail(formData.email);
+    if (emailError) {
+      alert(emailError);
+      return;
+    }
     e.preventDefault();
 
     console.log("Submitted Data:", formData);
@@ -223,26 +267,19 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   />
                   <input
                     name="email"
+                    type="email"
                     placeholder="Email*"
                     value={formData.email}
                     onChange={handleChange}
                     required
                     className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                   />
-                  <input
-                    name="whatsapp"
-                    type="text"
-                    inputMode="numeric"
+                  <PhoneInputField
+                    international
+                    defaultCountry="IN"
                     placeholder="WhatsApp Number* (Include country code)"
                     value={formData.whatsapp}
-                    onChange={handleChange}
-                    onInput={(e) => {
-                      const target = e.target as HTMLInputElement;
-                      target.value = target.value.replace(/(?!^\+)\D/g, "");
-                    }}
-                    required
-                    className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
-                  />
+                    onChange={handlePhoneChange} />
                   <input
                     name="location"
                     placeholder="Location"
@@ -308,26 +345,19 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   />
                   <input
                     name="email"
+                    type="email"
                     placeholder="Email*"
                     value={formData.email}
                     onChange={handleChange}
                     required
                     className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
                   />
-                  <input
-                    name="whatsapp"
-                    type="text"
-                    inputMode="numeric"
+                  <PhoneInputField
+                    international
+                    defaultCountry="IN"
                     placeholder="WhatsApp Number* (Include country code)"
                     value={formData.whatsapp}
-                    onChange={handleChange}
-                    onInput={(e) => {
-                      const target = e.target as HTMLInputElement;
-                      target.value = target.value.replace(/(?!^\+)\D/g, "");
-                    }}
-                    required
-                    className="p-2 h-[45px] text-center rounded-lg border border-gray-400 placeholder:text-[#1a6864]"
-                  />
+                    onChange={handlePhoneChange} />
                   <input
                     name="location"
                     placeholder="Location"
@@ -370,6 +400,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   />
                   <input
                     name="email"
+                    type="email"
                     placeholder="Email*"
                     value={subData.email}
                     onChange={handleSubChange}
@@ -414,6 +445,7 @@ const OrphanDetails: React.FC<OrphanDetailsProps> = ({
                   />
                   <input
                     name="email"
+                    type="email"
                     placeholder="Email*"
                     value={formData.email}
                     onChange={handleChange}

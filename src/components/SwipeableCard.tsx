@@ -11,6 +11,7 @@ import "../index.css";
 import { Video, Headphones } from "lucide-react";
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import PhoneInputField from './PhoneInputField';
+import SwipeHint from "./SwipeHint";
 
 interface SwipeableCardProps {
   id: string;
@@ -31,6 +32,7 @@ interface SwipeableCardProps {
   setIswaitClicked: any;
   setIsSubscribe: any;
   subscribe: boolean;
+  isFirstCard : boolean
 }
 
 const SwipeableCard: React.FC<SwipeableCardProps> = ({
@@ -47,10 +49,11 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   isAboutClicked,
   waitClick,
   setIswaitClicked,
-  isTopCard = false,
+  isTopCard,
   subscribe,
   setIsSubscribe,
   image,
+  isFirstCard
 }) => {
   const [exitX, setExitX] = useState<number | null>(null);
 
@@ -61,6 +64,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const isMobile = useIsMobile();
   const cardRef = useRef<HTMLDivElement>(null);
+
 
   const [formData, setFormData] = useState({
     role: "",
@@ -83,6 +87,8 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     name: "",
     email: "",
   });
+
+  console.log('first', isFirstCard)
 
 
   const [phoneError, setPhoneError] = useState('');
@@ -255,7 +261,6 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       onDragEnd={(_, info) => isTopCard && handlePan(info)}
       whileTap={isTopCard ? { scale: 1 } : undefined}
-      // whileHover={isTopCard ? { x: 8 } : undefined}
       animate={exitX !== null ? { x: exitX } : {}}
       transition={{
         type: "spring",
@@ -268,9 +273,10 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         transition: { duration: 0.3 },
       }}
     >
-      <div className="rounded-3xl">
+      <div className="relative rounded-3xl bg-red-200">
+        {(isFirstCard && !isAboutClicked && isMobile) && <SwipeHint />}
         <div
-          className="h-[calc(100vh-100px)]  w-full md:w-[333px] md:h-[665px] lg:w-[333px] lg:h-[665px] rounded-lg  mb-4 cursor-pointer transform transition-all duration-300 rounded-3xl"
+          className="h-[calc(100vh-100px)]   w-full md:w-[333px] md:h-[665px] lg:w-[333px] lg:h-[665px] rounded-lg  mb-4 cursor-pointer transform transition-all duration-300 rounded-3xl"
           onClick={onSelect}
           style={{
             backgroundImage: `url(${image})`,

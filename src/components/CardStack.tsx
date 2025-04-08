@@ -118,7 +118,6 @@ const CardStack = forwardRef(({
   };
 
 
-
   const handleSwipe = (id: string, direction: "left" | "right") => {
     setHasSelectedCard(true)
     const cardIndex = cards.findIndex(card => card.id === id);
@@ -143,6 +142,7 @@ const CardStack = forwardRef(({
     <div
       ref={stackRef}
       className={cn("flex  justify-center relative card-stack w-full mx-auto h-[85dvh] lg:my-0 md:my-0  lg:h-[600px] md:h-[600px]", "transition-all duration-300 ease-in-out", className)}>
+        
       <AnimatePresence>
         {cards.map((card, index) => (
           <SwipeableCard
@@ -150,6 +150,7 @@ const CardStack = forwardRef(({
             }} key={card.id}
             {...card}
             image={card.image}
+            isFirstCard={card.id === initialCards?.[0]?.id}
             isAboutClicked={isAboutClicked}
             waitClick={waitClick}
             setIswaitClicked={setIswaitClicked}

@@ -273,7 +273,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         transition: { duration: 0.3 },
       }}
     >
-      <div className="relative rounded-3xl bg-red-200">
+      <div className="relative rounded-3xl">
         {(isFirstCard && !isAboutClicked && isMobile) && <SwipeHint />}
         <div
           className="h-[calc(100vh-100px)]   w-full md:w-[333px] md:h-[665px] lg:w-[333px] lg:h-[665px] rounded-lg  mb-4 cursor-pointer transform transition-all duration-300 rounded-3xl"

@@ -221,9 +221,9 @@ function App() {
                         }
                         setIswaitClicked(true);
                       }}
-                      disabled={waitClick}
+                      disabled={waitClick && isAboutClicked}
                       className={`w-[60%] h-[50%] font-semibold py-2 px-6 rounded-full transition-all 
-                          ${waitClick ? "bg-orange-300 cursor-not-allowed" : "bg-[#FFA500] hover:bg-orange-400 text-white"}`}
+                          ${(waitClick || isAboutClicked) ? "bg-orange-300 cursor-not-allowed opacity-70 text-white" : "bg-[#FFA500] hover:bg-orange-400 text-white"}`}
                     >
                       Honor {initialCards[currentIndex].name}
                     </button>

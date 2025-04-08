@@ -162,7 +162,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const emailError = validateEmail(subData.email);
+    const emailError = validateEmail(formData.email);
     if (emailError) {
       alert(emailError);
       return;
@@ -211,7 +211,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
 
     e.preventDefault();
 
-    const emailError = validateEmail(formData.email);
+    const emailError = validateEmail(subData.email);
     if (emailError) {
       alert(emailError);
       return;

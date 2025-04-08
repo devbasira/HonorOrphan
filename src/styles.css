@@ -5,4 +5,42 @@
     }
   }
   
+  .arrow-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .arrow {
+    width: 0;
+    height: 2px;
+    background-color: white;
+    position: relative;
+    transition: width 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .arrow::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -4px;
+    transform: translateY(-50%) rotate(-45deg);
+    width: 6px;
+    height: 6px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    box-sizing: border-box;
+    transition: right 0.3s ease;
+  }
+  
+  button:hover .arrow {
+    width: 10px;
+  }
+  
+  button:hover .arrow::before {
+    right: -1.8px; 
+  }
+  
+  
 

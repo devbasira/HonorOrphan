@@ -8,7 +8,7 @@ import { AnimatePresence, motion, useAnimation } from 'framer-motion';
 import pic1 from './assets/pic1.png'
 import pic2 from './assets/pic2.png'
 import pic3 from './assets/pic3.png'
-
+import './styles.css'
 interface CardData {
   id: string;
   name: string;
@@ -150,9 +150,11 @@ function App() {
                 setShowSplash(false);
               }}
               whileTap={{ scale: 0.95 }}
-              className="mt-2 px-6 py-2 bg-[#FFA500]  hover:bg-orange-400 text-white rounded-full font-semibold text-lg transition"
-            >
+              className="mt-2 px-6 py-2 bg-[#FFA500] hover:bg-orange-400 w-[135px] text-white rounded-full font-semibold text-lg transition-all flex items-center gap-2">
               Bismillah
+              <div className="arrow-wrapper">
+                <div className="arrow" />
+              </div>
             </motion.button>
           </motion.div>
         </motion.div>
@@ -221,7 +223,7 @@ function App() {
                         }
                         setIswaitClicked(true);
                       }}
-                      disabled={waitClick && isAboutClicked}
+                      disabled={waitClick || isAboutClicked}
                       className={`w-[60%] h-[50%] font-semibold py-2 px-6 rounded-full transition-all 
                           ${(waitClick || isAboutClicked) ? "bg-orange-300 cursor-not-allowed opacity-70 text-white" : "bg-[#FFA500] hover:bg-orange-400 text-white"}`}
                     >

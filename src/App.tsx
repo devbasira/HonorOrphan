@@ -79,7 +79,7 @@ function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [subscribe, setIsSubscribe] = useState(false);
-
+  const [hasManuallyDismissed, setHasManuallyDismissed] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
 
   const controls = useAnimation();
@@ -97,16 +97,25 @@ function App() {
         transition: { delay: 0.3, duration: 0.8, ease: "easeOut" },
       });
 
-      const delay = setTimeout(() => {
+      const logoDelay = setTimeout(() => {
         controls.start({
           y: -30,
           transition: { duration: 0.6, ease: "easeOut" },
         });
       }, 1200);
 
-      return () => clearTimeout(delay);
+      const autoDismiss = setTimeout(() => {
+        if (!hasManuallyDismissed) {
+          setShowSplash(false);
+        }
+      }, 10000);
+
+      return () => {
+        clearTimeout(logoDelay);
+        clearTimeout(autoDismiss);
+      };
     }
-  }, []);
+  }, [hasManuallyDismissed]);
 
 
   if (showSplash) {
@@ -136,11 +145,14 @@ function App() {
               Join the mission to transform orphan care, treating each one individually, with kindness and honor.
             </p>
             <motion.button
-              onClick={() => setShowSplash(false)}
+              onClick={() => {
+                setHasManuallyDismissed(true);
+                setShowSplash(false);
+              }}
               whileTap={{ scale: 0.95 }}
               className="mt-2 px-6 py-2 bg-[#FFA500]  hover:bg-orange-400 text-white rounded-full font-semibold text-lg transition"
             >
-              بِسْمِ ٱللّٰهِ
+              Bismillah
             </motion.button>
           </motion.div>
         </motion.div>
@@ -176,7 +188,7 @@ function App() {
                 : 'bg-[#1A6874] text-white h-[45px] w-[130px] px-6 rounded-full'
                 }`}
             >
-              {!hasSelectedCard ? <X size={24} className="text-white" /> : 'About'}
+              {!hasSelectedCard ? <X size={24} className="text-white" /> : 'About Us'}
             </button>
           </div>
         </div>
@@ -204,8 +216,7 @@ function App() {
                   <div className="border-t fixed  bottom-0 left-0 w-[340px] flex justify-between items-center px-[20px] md:mt-6 lg:mt-5 h-[14vh] w-screen">
                     <button
                       onClick={() => {
-                        if(!isAboutClicked)
-                        {
+                        if (!isAboutClicked) {
                           setIsAbout(true)
                         }
                         setIswaitClicked(true);
@@ -234,7 +245,7 @@ function App() {
                       {isAboutClicked ? (
                         <X size={24} className="text-white" />
                       ) : (
-                        'About'
+                        'About Us'
                       )}
                     </button>
                   </div>
